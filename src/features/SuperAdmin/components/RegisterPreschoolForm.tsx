@@ -3,6 +3,7 @@ import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
 
 export interface PreschoolRegistrationForm {
   preschoolName: string;
@@ -40,6 +41,7 @@ const RegisterPreschoolForm: React.FC<Props> = ({ onSubmit, loading, initialValu
     resolver: yupResolver(schema),
     defaultValues: initialValues, // <-- this will keep fields empty on load
   });
+  const navigate = useNavigate();
 
   const onSubmitHandler = async (formData: PreschoolRegistrationForm) => {
     if (formData.password !== formData.confirmPassword) {

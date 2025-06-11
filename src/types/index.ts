@@ -10,13 +10,18 @@ export interface User {
 }
 
 export interface RegisterUser {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
   confirmPassword: string;
   role: string;
+  subject?: string;         // For Teacher
+  qualification?: string;   // For Teacher
+  childName?: string;       // For Parent
+  childAge?: string;        // For Parent
+  childClass?: string;      // For Parent
 }
 
 export interface LoginUser {

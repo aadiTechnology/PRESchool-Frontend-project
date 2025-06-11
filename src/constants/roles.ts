@@ -1,7 +1,8 @@
 export const Roles = {
-  ADMIN: 'admin',
-  TEACHER: 'teacher',
-  STUDENT: 'student',
+  SUPER_ADMIN: '0',
+  ADMIN: '1',
+  TEACHER: '2',
+  PARENT: '3',
 };
 
 export const Permissions = {

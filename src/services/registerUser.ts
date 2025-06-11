@@ -6,7 +6,12 @@ export interface RegisterUserParams {
   password: string;
   confirmPassword: string;
   role: string;
-  preschool_id: number; // <-- Add this line
+  preschool_id: number;
+  subject?: string;
+  qualification?: string;
+  childName?: string;
+  childAge?: string;
+  childClass?: string; // <-- Add this line
 }
 
 export async function registerUser(params: RegisterUserParams): Promise<void> {
