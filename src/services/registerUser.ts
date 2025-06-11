@@ -4,8 +4,9 @@ export interface RegisterUserParams {
   email: string;
   phone: string;
   password: string;
-  confirm_password: string;
+  confirmPassword: string;
   role: string;
+  preschool_id: number; // <-- Add this line
 }
 
 export async function registerUser(params: RegisterUserParams): Promise<void> {

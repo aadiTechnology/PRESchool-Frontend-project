@@ -32,8 +32,9 @@ export const useAuth = () => {
         email: userData.email,
         phone: userData.phone,
         password: userData.password,
-        confirm_password: userData.confirmPassword,
-        role: userData.role
+        confirmPassword: userData.confirmPassword,
+        role: userData.role,
+        preschool_id: 0
       };
       await authService.register(registerParams);
       return;

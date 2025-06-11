@@ -15,7 +15,7 @@ export interface RegisterUser {
   email: string;
   phone: string;
   password: string;
-  confirm_password: string;
+  confirmPassword: string;
   role: string;
 }
 

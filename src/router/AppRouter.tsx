@@ -10,6 +10,7 @@ import TeacherRegister from '../features/teacher/TeacherRegister';
 import NotFound from '../pages/NotFound';
 import RouteGuard from './RouteGuards';
 import AdminConfig from '../pages/AdminConfig';
+import RegisterPreschoolPage from '../features/SuperAdmin/pages/RegisterPreschoolPage';
 
 import Dashboard from '../features/dashboard/Dashboard';
 
@@ -80,6 +81,16 @@ const AppRouter: React.FC = () => {
                 <TeacherRegister />
               </AppLayout>
             </RouteGuard>
+          }
+        />
+        <Route
+          path="/register-preschool"
+          element={
+            // <RouteGuard >
+              <AppLayout>
+                <RegisterPreschoolPage />
+              </AppLayout>
+            // </RouteGuard>
           }
         />
         <Route path="*" element={<NotFound />} />

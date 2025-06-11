@@ -10,8 +10,8 @@ export default function Register() {
     email: '',
     phone: '',
     password: '',
-    confirm_password: '',
-    role: '',
+    confirmPassword: '',
+    role: '0',
   });
 
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function Register() {
   };
 
   const handleSubmit = async () => {
-    if (formData.password !== formData.confirm_password) {
+    if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
@@ -32,8 +32,9 @@ export default function Register() {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        confirm_password: formData.confirm_password,
+        confirmPassword: formData.confirmPassword,
         role: formData.role,
+        preschool_id: 0,
       });
       alert("User registered successfully");
       navigate('/login');
@@ -66,16 +67,15 @@ export default function Register() {
         value={formData.password} onChange={handleChange}
       />
       <TextField
-        fullWidth margin="normal" label="Confirm Password" name="confirm_password" type="password"
-        value={formData.confirm_password} onChange={handleChange}
+        fullWidth margin="normal" label="Confirm Password" name="confirmPassword" type="password"
+        value={formData.confirmPassword} onChange={handleChange}
       />
       <TextField
         select fullWidth margin="normal" label="Role" name="role"
         value={formData.role} onChange={handleChange}
       >
-        <MenuItem value="admin">Admin</MenuItem>
-        <MenuItem value="Teacher">Teacher</MenuItem>
-        <MenuItem value="user">User</MenuItem>
+        <MenuItem value="0">Super Admin</MenuItem>
+        
         
         {/* Add more roles as needed */}
       </TextField>

@@ -8,10 +8,12 @@ import {
   Drawer,
   useMediaQuery,
   useTheme,
+  MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SidebarMenu from './SidebarMenu';
 import ProfileMenu from './ProfileMenu'; // ProfileMenu component
+import { Link } from 'react-router-dom';
 
 const schoolName = 'Greenfield International School';
 const logoUrl = '/images/happy_kids1.png'; // Corrected and simplified
@@ -107,6 +109,11 @@ const Header1: React.FC = () => {
         }}
       >
         <SidebarMenu userRole="admin" />
+        {/* {userRole === 'superadmin' && ( */}
+          <MenuItem component={Link} to="/register-preschool">
+            Register Preschool
+          </MenuItem>
+        {/* )} */}
       </Drawer>
     </>
   );

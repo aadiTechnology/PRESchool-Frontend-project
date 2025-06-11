@@ -28,8 +28,9 @@ const TeacherRegister: React.FC = () => {
         email,
         phone,
         password,
-        confirm_password: '',
-        role: ''
+        confirmPassword: '',
+        role: '',
+        preschool_id: 0, // Assuming you want to set this to 0 or handle it accordingly
       });
       navigate('/login'); // Redirect to login after successful registration
     } catch (err) {
