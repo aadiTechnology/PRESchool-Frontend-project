@@ -13,16 +13,27 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth'; // Adjust the path if needed
 
 const ProfileMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout(); // should clear tokens and user info
+    localStorage.clear(); // or remove specific keys like localStorage.removeItem('token')
+    sessionStorage.clear(); // if you use sessionStorage
+    navigate('/login');
   };
 
   const userName = 'Ms. Anubha Brajesh';
@@ -101,7 +112,7 @@ const ProfileMenu: React.FC = () => {
 
         <Divider />
 
-        <MenuItem>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
