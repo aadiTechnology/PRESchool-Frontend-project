@@ -25,7 +25,7 @@ const getValidationSchema = (role: string) => {
   if (role === Roles.TEACHER) {
     return yup.object().shape({
       ...base,
-      subject: yup.string().required('Subject is required'),
+      className: yup.string().required('Class is required'),
       qualification: yup.string().required('Qualification is required'),
     });
   }
@@ -49,7 +49,7 @@ export default function Register() {
     password: '',
     confirmPassword: '',
     role: Roles.TEACHER,
-    subject: '',
+    className: '', // <-- Add this
     qualification: '',
     childName: '',
     childAge: '',
@@ -71,7 +71,7 @@ export default function Register() {
       await schema.validate(formData, { abortEarly: false });
       const payload: any = { ...formData };
       if (formData.role !== Roles.TEACHER) {
-        delete payload.subject;
+        delete payload.className;
         delete payload.qualification;
       }
       if (formData.role !== Roles.PARENT) {
@@ -162,16 +162,31 @@ export default function Register() {
             <>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  fullWidth label="Subject" name="subject"
-                  value={formData.subject} onChange={handleChange}
-                  error={!!errors.subject} helperText={errors.subject}
-                />
+                  fullWidth
+                  label="Class"
+                  name="className"
+                  value={formData.className}
+                  onChange={handleChange}
+                  error={!!errors.className}
+                  helperText={errors.className}
+                  select
+                >
+                  <MenuItem value="">Select Class</MenuItem>
+                  <MenuItem value="Nursery">Nursery</MenuItem>
+                  <MenuItem value="LKG">LKG</MenuItem>
+                  <MenuItem value="UKG">UKG</MenuItem>
+                  {/* Add more classes as needed */}
+                </TextField>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  fullWidth label="Qualification" name="qualification"
-                  value={formData.qualification} onChange={handleChange}
-                  error={!!errors.qualification} helperText={errors.qualification}
+                  fullWidth
+                  label="Qualification"
+                  name="qualification"
+                  value={formData.qualification}
+                  onChange={handleChange}
+                  error={!!errors.qualification}
+                  helperText={errors.qualification}
                 />
               </Grid>
             </>

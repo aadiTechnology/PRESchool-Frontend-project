@@ -17,11 +17,11 @@ export interface RegisterUser {
   password: string;
   confirmPassword: string;
   role: string;
-  subject?: string;         // For Teacher
-  qualification?: string;   // For Teacher
-  childName?: string;       // For Parent
-  childAge?: string;        // For Parent
-  childClass?: string;      // For Parent
+  className?: string;      // For Teacher (instead of subject)
+  qualification?: string;     // For Teacher
+  childName?: string;         // For Parent
+  childAge?: string;          // For Parent
+  childClass?: string;        // For Parent
 }
 
 export interface LoginUser {

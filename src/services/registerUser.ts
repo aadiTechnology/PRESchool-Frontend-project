@@ -7,11 +7,11 @@ export interface RegisterUserParams {
   confirmPassword: string;
   role: string;
   preschool_id: number;
-  subject?: string;
+  className?: string; // <-- Add this
   qualification?: string;
   childName?: string;
   childAge?: string;
-  childClass?: string; // <-- Add this line
+  childClass?: string;
 }
 
 export async function registerUser(params: RegisterUserParams): Promise<void> {
