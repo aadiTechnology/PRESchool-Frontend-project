@@ -13,5 +13,10 @@ export async function loginUser(email: string, password: string) {
     throw new Error(data.detail || 'Login failed');
   }
 
+  // Save role to localStorage for role-based routing
+  if (data.user && data.user.role) {
+    localStorage.setItem('role', data.user.role);
+  }
+
   return data;
 }
