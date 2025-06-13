@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, Container, Paper } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -39,7 +39,7 @@ interface Props {
 const RegisterPreschoolForm: React.FC<Props> = ({ onSubmit, loading, initialValues }) => {
   const { handleSubmit, control, formState: { errors } } = useForm<PreschoolRegistrationForm>({
     resolver: yupResolver(schema),
-    defaultValues: initialValues, // <-- this will keep fields empty on load
+    defaultValues: initialValues,
   });
   const navigate = useNavigate();
 
@@ -66,95 +66,99 @@ const RegisterPreschoolForm: React.FC<Props> = ({ onSubmit, loading, initialValu
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmitHandler)} sx={{ mt: 2 }}>
-      <Typography variant="h5" mb={2}>Register a New Preschool</Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="preschoolName"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="Preschool Name" fullWidth error={!!errors.preschoolName} helperText={errors.preschoolName?.message} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="city"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="City/Location" fullWidth error={!!errors.city} helperText={errors.city?.message} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="adminFirstName"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="Admin Name" fullWidth error={!!errors.adminFirstName} helperText={errors.adminFirstName?.message} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="adminLastName"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="Admin Name" fullWidth error={!!errors.adminLastName} helperText={errors.adminLastName?.message} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="adminEmail"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="Admin Email" fullWidth error={!!errors.adminEmail} helperText={errors.adminEmail?.message} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="adminPhone"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="Admin Phone" fullWidth error={!!errors.adminPhone} helperText={errors.adminPhone?.message} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="Initial Password (optional)" type="password" fullWidth error={!!errors.password} helperText={errors.password?.message} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="confirmPassword"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Confirm Password"
-                type="password"
-                fullWidth
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
+    <Container maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <Paper elevation={6} sx={{ p: { xs: 2, sm: 4 }, width: '100%' }}>
+        <Box component="form" onSubmit={handleSubmit(onSubmitHandler)} sx={{ mt: 2 }}>
+          <Typography variant="h5" mb={2} align="center">Register a New Preschool</Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="preschoolName"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="Preschool Name" fullWidth error={!!errors.preschoolName} helperText={errors.preschoolName?.message} />
+                )}
               />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary" disabled={loading} fullWidth>
-            Add Preschool
-          </Button>
-        </Grid>
-      </Grid>
-    </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="city"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="City/Location" fullWidth error={!!errors.city} helperText={errors.city?.message} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="adminFirstName"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="Admin First Name" fullWidth error={!!errors.adminFirstName} helperText={errors.adminFirstName?.message} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="adminLastName"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="Admin Last Name" fullWidth error={!!errors.adminLastName} helperText={errors.adminLastName?.message} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="adminEmail"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="Admin Email" fullWidth error={!!errors.adminEmail} helperText={errors.adminEmail?.message} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="adminPhone"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="Admin Phone" fullWidth error={!!errors.adminPhone} helperText={errors.adminPhone?.message} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="Initial Password (optional)" type="password" fullWidth error={!!errors.password} helperText={errors.password?.message} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="confirmPassword"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Confirm Password"
+                    type="password"
+                    fullWidth
+                    error={!!errors.confirmPassword}
+                    helperText={errors.confirmPassword?.message}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" color="primary" disabled={loading} fullWidth>
+                Add Preschool
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { TextField, Button, Typography, Container } from '@mui/material';
+import { TextField, Button, Typography, Container, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { forgotPassword } from '../services/forgotPassword';
 
@@ -25,36 +25,48 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Typography variant="h4" align="center" gutterBottom>
-        Forgot Password?
-      </Typography>
-      <Typography align="center" gutterBottom>
-        We'll send you an OTP to reset your password.
-      </Typography>
-      <TextField
-        label="Your email address"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
-        onClick={handleSendOtp}
-      >
-        SEND OTP
-      </Button>
-      {error && (
-        <Typography color="error" align="center" sx={{ mt: 2 }}>
-          {typeof error === 'string' ? error : JSON.stringify(error)}
-        </Typography>
-      )}
+    <Container maxWidth="xs" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <Paper elevation={6} sx={{ p: { xs: 2, sm: 4 }, width: '100%' }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center" gutterBottom>
+              Forgot Password?
+            </Typography>
+            <Typography align="center" gutterBottom>
+              We'll send you an OTP to reset your password.
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Your email address"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+              onClick={handleSendOtp}
+            >
+              SEND OTP
+            </Button>
+          </Grid>
+          {error && (
+            <Grid item xs={12}>
+              <Typography color="error" align="center" sx={{ mt: 2 }}>
+                {typeof error === 'string' ? error : JSON.stringify(error)}
+              </Typography>
+            </Grid>
+          )}
+        </Grid>
+      </Paper>
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container } from '@mui/material';
+import { TextField, Button, Typography, Container, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { resetPassword } from '../services/resetPassword';
 
@@ -30,44 +30,56 @@ const ResetPassword = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Typography variant="h4" align="center" gutterBottom>
-        Reset Your Password
-      </Typography>
-      <TextField
-        label="New password"
-        type="password"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <TextField
-        label="Confirm new password"
-        type="password"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        required
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
-        onClick={handleReset}
-      >
-        Reset Password
-      </Button>
-      {error && (
-        <Typography color="error" align="center" sx={{ mt: 2 }}>
-          {error}
-        </Typography>
-      )}
+    <Container maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <Paper elevation={6} sx={{ p: { xs: 2, sm: 4 }, width: '100%' }}>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center" gutterBottom>
+              Reset Your Password
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="New password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Confirm new password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </Grid>
+          {error && (
+            <Grid item xs={12}>
+              <Typography color="error" align="center" sx={{ mt: 1 }}>
+                {error}
+              </Typography>
+            </Grid>
+          )}
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+              onClick={handleReset}
+            >
+              Reset Password
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
     </Container>
   );
 };
