@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { verifyOtp } from '../services/verifyOtp';
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get email from location state or localStorage
+  const email = location.state?.email || localStorage.getItem('resetEmail') || '';
 
   const handleVerifyOtp = async () => {
     setError('');
-    // Call backend to verify OTP
-    const response = await fetch('http://localhost:8000/api/v1/auth/verify-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ otp }),
-    });
-    if (response.ok) {
+    try {
+      await verifyOtp(email, otp);
+      // Store email for reset password step
+      localStorage.setItem('resetEmail', email);
       navigate('/reset-password');
-    } else {
-      setError('Invalid OTP. Please try again.');
+    } catch (err: any) {
+      setError(err.message || 'Invalid OTP. Please try again.');
     }
   };
 

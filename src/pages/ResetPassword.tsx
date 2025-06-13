@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { resetPassword } from '../services/resetPassword';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const email = localStorage.getItem('resetEmail') || '';
 
   const handleReset = async () => {
     setError('');
@@ -18,16 +20,12 @@ const ResetPassword = () => {
       setError('Passwords do not match.');
       return;
     }
-    // Call backend to reset password
-    const response = await fetch('http://localhost:8000/api/v1/auth/reset-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
-    if (response.ok) {
+    try {
+      await resetPassword(email, password);
+      localStorage.removeItem('resetEmail');
       navigate('/login');
-    } else {
-      setError('Failed to reset password. Try again.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to reset password');
     }
   };
 
