@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { login as loginService, register } from '../services/authService';
+import { User } from '../types';
 
 
 export interface AuthContextType {
@@ -64,5 +65,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       {children}
     </AuthContext.Provider>
   );
+};
+
+const initialData: Partial<User> & { password?: string; confirmPassword?: string } = {};
+
+export const YourComponent = () => {
+  const [form, setForm] = useState<Partial<User> & { password?: string; confirmPassword?: string }>(initialData);
+
+
 };
 

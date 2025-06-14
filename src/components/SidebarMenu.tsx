@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const screens = [
   { path: '/dashboard', label: 'Dashboard' },
-  { path: '/users', label: 'Users' },
+  { path: '/admin/users', label: 'User Management' },
   { path: '/reports', label: 'Reports' },
 ];
 

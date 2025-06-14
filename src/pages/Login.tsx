@@ -33,7 +33,7 @@ const Login = () => {
     if (isLogin) {
       const role = localStorage.getItem('role');
       if (role === '0') navigate('/dashboard');
-      else if (role === '1') navigate('/admin-dashboard');
+      else if (role === '1') navigate('/admin/users');
       else if (role === '2') navigate('/teacher-dashboard');
       else if (role === '3') navigate('/parent-dashboard');
       else navigate('/dashboard');

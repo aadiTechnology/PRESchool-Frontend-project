@@ -4,12 +4,11 @@ import AppLayout from '../layouts/AppLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import UserList from '../features/user/UserList';
-import UserEdit from '../features/user/UserEdit';
 import NotFound from '../pages/NotFound';
 import RouteGuard from './RouteGuards';
 import AdminConfig from '../pages/AdminConfig';
 import RegisterPreschoolPage from '../features/SuperAdmin/pages/RegisterPreschoolPage';
+import UserManagementPage from '../features/Admin/page/UserManagementPage';
 
 import Dashboard from '../features/dashboard/Dashboard';
 import ForgotPassword from '../pages/ForgotPassword';
@@ -55,26 +54,6 @@ const AppRouter: React.FC = () => {
           }
         />
       
-        <Route
-          path="/users"
-          element={
-            <RouteGuard>
-              <AppLayout>
-                <UserList />
-              </AppLayout>
-            </RouteGuard>
-          }
-        />
-        <Route
-          path="/users/edit/:id"
-          element={
-            <RouteGuard>
-              <AppLayout>
-                <UserEdit />
-              </AppLayout>
-            </RouteGuard>
-          }
-        />
         
         <Route
           path="/register-preschool"
@@ -89,6 +68,14 @@ const AppRouter: React.FC = () => {
         <Route path="/forgot-password" element={<AppLayout><ForgotPassword /></AppLayout>} />
         <Route path="/otp" element={<AppLayout><OtpVerification /></AppLayout>} />
         <Route path="/reset-password" element={<AppLayout><ResetPassword /></AppLayout>} />
+        <Route
+          path="/admin/users"
+          element={
+            <AppLayout>
+              <UserManagementPage />
+            </AppLayout>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
