@@ -33,9 +33,9 @@ const Login = () => {
     if (isLogin) {
       const role = localStorage.getItem('role');
       if (role === '0') navigate('/dashboard');
-      else if (role === '1') navigate('/admin/users');
-      else if (role === '2') navigate('/teacher-dashboard');
-      else if (role === '3') navigate('/parent-dashboard');
+      else if (role === '1') navigate('/admin/dashboardAdmin');
+      else if (role === '2') navigate('/teacher/dashboardTeacher');
+      else if (role === '3') navigate('/parent/dashboardParent');
       else navigate('/dashboard');
     }
   }, [isLogin, navigate]);
