@@ -7,10 +7,12 @@ import { Snackbar, Alert } from '@mui/material';
 const initialValues = {
   preschoolName: '',
   city: '',
-  adminName: '',
+  adminFirstName: '',
+  adminLastName: '',
   adminEmail: '',
   adminPhone: '',
   password: '',
+  confirmPassword: '',
 };
 
 const RegisterPreschoolPage: React.FC = () => {
@@ -23,7 +25,7 @@ const RegisterPreschoolPage: React.FC = () => {
     try {
       await registerPreschool(data);
       setSnackbar({open: true, message: 'Preschool and admin successfully created.', severity: 'success'});
-      setTimeout(() => navigate('/register'), 1500);
+      // setTimeout(() => navigate('/register-preschool'), 1500);
     } catch (error: any) {
       setSnackbar({open: true, message: error?.response?.data?.message || 'Server error', severity: 'error'});
     } finally {

@@ -37,7 +37,7 @@ interface Props {
 }
 
 const RegisterPreschoolForm: React.FC<Props> = ({ onSubmit, loading, initialValues }) => {
-  const { handleSubmit, control, formState: { errors } } = useForm<PreschoolRegistrationForm>({
+  const { handleSubmit, control, formState: { errors }, reset } = useForm<PreschoolRegistrationForm>({
     resolver: yupResolver(schema),
     defaultValues: initialValues,
   });
@@ -60,6 +60,7 @@ const RegisterPreschoolForm: React.FC<Props> = ({ onSubmit, loading, initialValu
         confirmPassword: formData.password,
       });
       alert("Preschool registered successfully");
+      reset(); // <-- Reset the form here
     } catch (error: any) {
       alert(error?.response?.data?.detail || "Error registering preschool");
     }
