@@ -108,12 +108,8 @@ const Header1: React.FC = () => {
           },
         }}
       >
-        <SidebarMenu userRole="admin" />
-        {/* {userRole === 'superadmin' && ( */}
-          <MenuItem component={Link} to="/register-preschool">
-            Register Preschool
-          </MenuItem>
-        {/* )} */}
+        <SidebarMenu/>
+        
       </Drawer>
     </>
   );

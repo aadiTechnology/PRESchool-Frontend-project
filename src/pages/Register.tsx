@@ -22,14 +22,14 @@ const getValidationSchema = (role: string) => {
     confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords do not match').required('Confirm Password is required'),
     role: yup.string().required('Role is required'),
   };
-  if (role === Roles.TEACHER) {
+  if (role === Roles.TEACHER.toString()) {
     return yup.object().shape({
       ...base,
       className: yup.string().required('Class is required'),
       qualification: yup.string().required('Qualification is required'),
     });
   }
-  if (role === Roles.PARENT) {
+  if (role === Roles.PARENT.toString()) {
     return yup.object().shape({
       ...base,
       childName: yup.string().required('Child Name is required'),
@@ -48,7 +48,7 @@ export default function Register() {
     phone: '',
     password: '',
     confirmPassword: '',
-    role: Roles.TEACHER,
+    role: Roles.TEACHER.toString(),
     className: '', // <-- Add this
     qualification: '',
     childName: '',
@@ -70,11 +70,11 @@ export default function Register() {
     try {
       await schema.validate(formData, { abortEarly: false });
       const payload: any = { ...formData };
-      if (formData.role !== Roles.TEACHER) {
+      if (formData.role !== Roles.TEACHER.toString()) {
         delete payload.className;
         delete payload.qualification;
       }
-      if (formData.role !== Roles.PARENT) {
+      if (formData.role !== Roles.PARENT.toString()) {
         delete payload.childName;
         delete payload.childAge;
         delete payload.childClass;
@@ -158,7 +158,7 @@ export default function Register() {
             </TextField>
           </Grid>
           {/* Teacher fields */}
-          {formData.role === Roles.TEACHER && (
+          {formData.role === Roles.TEACHER.toString() && (
             <>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -192,7 +192,7 @@ export default function Register() {
             </>
           )}
           {/* Parent fields */}
-          {formData.role === Roles.PARENT && (
+          {formData.role === Roles.PARENT.toString() && (
             <>
               <Grid item xs={12} sm={12}>
                 <TextField

@@ -1,23 +1,21 @@
 import React from 'react';
 import { List, ListItem, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Screens } from '../constants/roles';
 
-const screens = [
-  { path: '/dashboard', label: 'Dashboard' },
-  { path: '/admin/users', label: 'User Management' },
-  { path: '/reports', label: 'Reports' },
-];
 
-export default function SidebarMenu({ userRole }: { userRole: string }) {
+export default function SidebarMenu() {
   // const permissions = JSON.parse(localStorage.getItem('rolePermissions') || '{}');
-
+  let userJSON = localStorage.getItem('user');
+  let user = userJSON== null ? {role:-1} : JSON.parse(userJSON);
+  console.log('SidebarMenu', user);
   return (
     <List>
-      {screens
-        // .filter(screen => (permissions[screen.path] || []).includes(userRole))
-        .map(screen => (
-          <ListItem button component={Link} to={screen.path} key={screen.path}>
-            <ListItemText primary={screen.label} />
+      {Screens
+        .filter(screen => (screen.roles.includes(user.role)))
+        .map(Screens => (
+          <ListItem button component={Link} to={Screens.path} key={Screens.path}>
+            <ListItemText primary={Screens.label} />
           </ListItem>
         ))}
     </List>
