@@ -11,8 +11,9 @@ const HomeworkListPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({ open: false, message: '', severity: 'success' });
 
-  // For Add/Edit dialog
+  // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editHomework, setEditHomework] = useState<HomeworkItem | null>(null);
   const [subjects, setSubjects] = useState<SubjectOption[]>([]);
   const [fetchingSubjects, setFetchingSubjects] = useState(false);
 
@@ -54,10 +55,19 @@ const HomeworkListPage: React.FC = () => {
     // eslint-disable-next-line
   }, [divisionId, classId]);
 
-  const handleEdit = (hw: HomeworkItem) => {
-    // Implement edit logic if needed
+  // Add Homework
+  const handleAdd = () => {
+    setEditHomework(null);
+    setDialogOpen(true);
   };
 
+  // Edit Homework
+  const handleEdit = (hw: HomeworkItem) => {
+    setEditHomework(hw);
+    setDialogOpen(true);
+  };
+
+  // Delete Homework
   const handleDelete = async (id: number) => {
     if (!window.confirm('Are you sure you want to delete this homework?')) return;
     try {
@@ -69,24 +79,39 @@ const HomeworkListPage: React.FC = () => {
     }
   };
 
-  // Add Homework dialog handlers
-  const handleAdd = () => {
-    setDialogOpen(true);
-  };
-
+  // Dialog close
   const handleDialogClose = () => {
     setDialogOpen(false);
+    setEditHomework(null);
   };
 
+  // Save (add or edit)
   const handleDialogSave = async (form: AssignHomeworkFormValues) => {
     try {
-      await assignHomework({ ...form, divisionId });
-      setSnackbar({ open: true, message: 'Homework added', severity: 'success' });
+      // If editing, pass homework id to the service (update logic)
+      await assignHomework({ ...form, divisionId, id: editHomework?.id });
+      setSnackbar({ open: true, message: editHomework ? 'Homework updated' : 'Homework added', severity: 'success' });
       setDialogOpen(false);
+      setEditHomework(null);
       fetchList();
     } catch {
-      setSnackbar({ open: true, message: 'Failed to add homework', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to save homework', severity: 'error' });
     }
+  };
+
+  // Prepare initial values for edit
+  const getInitialFormValues = (): AssignHomeworkFormValues => {
+    if (!editHomework) {
+      return { subjectId: '', homeworkDate: '', instructions: '', attachments: [] };
+    }
+    // Map subjectName to subjectId
+    const subject = subjects.find(s => s.name === editHomework.subjectName);
+    return {
+      subjectId: subject ? subject.id : '',
+      homeworkDate: editHomework.homeworkDate || '',
+      instructions: editHomework.instructions || '',
+      attachments: [],
+    };
   };
 
   return (
@@ -108,12 +133,13 @@ const HomeworkListPage: React.FC = () => {
         loading={loading}
       />
       <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Add Homework</DialogTitle>
+        <DialogTitle>{editHomework ? 'Edit Homework' : 'Add Homework'}</DialogTitle>
         <DialogContent>
           <AssignHomeworkForm
             subjects={subjects}
             onSubmit={handleDialogSave}
             loading={fetchingSubjects}
+            initialValues={getInitialFormValues()}
           />
         </DialogContent>
       </Dialog>

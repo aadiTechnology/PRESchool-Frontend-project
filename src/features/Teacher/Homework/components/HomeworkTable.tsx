@@ -12,6 +12,7 @@ export interface HomeworkAttachment {
 
 export interface HomeworkItem {
   id: number;
+  subjectId: number;      // <-- Add this field
   subjectName: string;
   homeworkDate: string;
   instructions: string;

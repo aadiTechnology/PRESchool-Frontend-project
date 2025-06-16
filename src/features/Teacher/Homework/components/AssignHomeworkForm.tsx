@@ -29,20 +29,28 @@ interface Props {
   subjects: SubjectOption[];
   onSubmit: (data: AssignHomeworkFormValues) => void;
   loading?: boolean;
+  initialValues?: AssignHomeworkFormValues;
 }
 
 const AssignHomeworkForm: React.FC<Props> = ({
   subjects,
   onSubmit,
   loading,
+  initialValues,
 }) => {
-  const [form, setForm] = useState<AssignHomeworkFormValues>({
-    subjectId: '',
-    homeworkDate: '',
-    instructions: '',
-    attachments: [],
-  });
+  const [form, setForm] = useState<AssignHomeworkFormValues>(
+    initialValues || {
+      subjectId: '',
+      homeworkDate: '',
+      instructions: '',
+      attachments: [],
+    }
+  );
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    if (initialValues) setForm(initialValues);
+  }, [initialValues]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
     const { name, value } = e.target;
