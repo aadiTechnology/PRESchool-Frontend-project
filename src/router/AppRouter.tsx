@@ -17,7 +17,8 @@ import ResetPassword from '../pages/ResetPassword';
 import DashboardAdmin from '../features/dashboard/DashboardAdmin';
 import DashboardTeacher from '../features/dashboard/DashboardTeacher';
 import DashboardParent from '../features/dashboard/DashboardParent';
-import AssignHomeworkPage from '../features/Teacher/assignHomework/pages/AssignHomeworkPage';
+import AssignHomeworkPage from '../features/Teacher/Homework/pages/AssignHomeworkPage';
+import HomeworkListPage from '../features/Teacher/Homework/pages/HomeworkListPage';
 
 const AppRouter: React.FC = () => {
   return (
@@ -83,6 +84,11 @@ const AppRouter: React.FC = () => {
         <Route
           path="/teacher/assign-homework"
           element={<AppLayout><AssignHomeworkPage /></AppLayout>}
+        />
+
+        <Route
+          path="/teacher/homework"
+          element={<AppLayout><HomeworkListPage /></AppLayout>}
         />
 
         <Route path="*" 
