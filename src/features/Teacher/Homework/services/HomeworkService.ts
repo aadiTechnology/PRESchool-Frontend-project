@@ -25,3 +25,11 @@ export async function deleteHomework(id: number): Promise<void> {
   });
   if (!res.ok) throw new Error('Failed to delete homework');
 }
+
+export async function fetchHomeworkById(id: string | number) {
+  const res = await fetch(`http://localhost:8000/api/v1/auth/homeworks/${id}`, {
+    headers: getAuthHeaders(),
+  });
+  if (!res.ok) throw new Error('Failed to fetch homework');
+  return res.json();
+}

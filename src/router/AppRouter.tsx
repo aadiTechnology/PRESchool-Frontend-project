@@ -19,6 +19,7 @@ import DashboardTeacher from '../features/dashboard/DashboardTeacher';
 import DashboardParent from '../features/dashboard/DashboardParent';
 import AssignHomeworkPage from '../features/Teacher/Homework/pages/AssignHomeworkPage';
 import HomeworkListPage from '../features/Teacher/Homework/pages/HomeworkListPage';
+import HomeworkViewPage from '../features/Teacher/Homework/pages/HomeworkViewPage';
 
 const AppRouter: React.FC = () => {
   return (
@@ -89,6 +90,16 @@ const AppRouter: React.FC = () => {
         <Route
           path="/teacher/homework"
           element={<AppLayout><HomeworkListPage /></AppLayout>}
+        />
+
+        <Route
+          path="/parent/homework"
+          element={<AppLayout><HomeworkListPage /></AppLayout>} // or a parent-specific page if needed
+        />
+
+        <Route
+          path="/teacher/homework/:id"
+          element={<AppLayout><HomeworkViewPage /></AppLayout>}
         />
 
         <Route path="*" 

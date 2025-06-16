@@ -5,6 +5,7 @@ import AssignHomeworkForm, { AssignHomeworkFormValues, SubjectOption } from '../
 import { fetchHomeworkList, deleteHomework } from '../services/HomeworkService';
 import { assignHomework } from '../services/assignHomeworkService';
 import { fetchSubjectsForClass } from '../services/subjectService';
+import { useNavigate } from 'react-router-dom';
 
 const HomeworkListPage: React.FC = () => {
   const [homework, setHomework] = useState<HomeworkItem[]>([]);
@@ -18,8 +19,12 @@ const HomeworkListPage: React.FC = () => {
   const [fetchingSubjects, setFetchingSubjects] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userRole = user.role; // 2 = teacher, 3 = parent
+
   const divisionId = user.divisionId || '';
   const classId = user.classId || '';
+
+  const navigate = useNavigate();
 
   const fetchList = async () => {
     setLoading(true);
@@ -114,23 +119,31 @@ const HomeworkListPage: React.FC = () => {
     };
   };
 
+  const handleRowClick = (hw: HomeworkItem) => {
+    navigate(`/teacher/homework/${hw.id}`);
+  };
+
   return (
     <Box>
       <Typography variant="h4" gutterBottom>Homework</Typography>
       <Typography variant="h6" gutterBottom>Assigned Homework</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ mb: 2 }}
-        onClick={handleAdd}
-      >
-        Add Homework
-      </Button>
+      {userRole === 2 && (
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mb: 2 }}
+          onClick={handleAdd}
+        >
+          Add Homework
+        </Button>
+      )}
       <HomeworkTable
         homework={homework}
         onEdit={handleEdit}
         onDelete={handleDelete}
         loading={loading}
+        userRole={userRole}
+        onRowClick={handleRowClick}
       />
       <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
         <DialogTitle>{editHomework ? 'Edit Homework' : 'Add Homework'}</DialogTitle>

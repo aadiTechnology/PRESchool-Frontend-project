@@ -12,7 +12,7 @@ export interface HomeworkAttachment {
 
 export interface HomeworkItem {
   id: number;
-  subjectId: number;      // <-- Add this field
+  subjectId: number;
   subjectName: string;
   homeworkDate: string;
   instructions: string;
@@ -24,9 +24,11 @@ interface HomeworkTableProps {
   onEdit: (hw: HomeworkItem) => void;
   onDelete: (id: number) => void;
   loading?: boolean;
+  userRole: number;
+  onRowClick?: (hw: HomeworkItem) => void;
 }
 
-const HomeworkTable: React.FC<HomeworkTableProps> = ({ homework, onEdit, onDelete, loading }) => (
+const HomeworkTable: React.FC<HomeworkTableProps> = ({ homework, onEdit, onDelete, loading, userRole, onRowClick }) => (
   <TableContainer component={Paper}>
     <Table>
       <TableHead>
@@ -35,12 +37,17 @@ const HomeworkTable: React.FC<HomeworkTableProps> = ({ homework, onEdit, onDelet
           <TableCell>Homework Date</TableCell>
           <TableCell>Instructions</TableCell>
           <TableCell>Attachments</TableCell>
-          <TableCell>Actions</TableCell>
+          {userRole === 2 && <TableCell>Actions</TableCell>}
         </TableRow>
       </TableHead>
       <TableBody>
         {homework.map(hw => (
-          <TableRow key={hw.id}>
+          <TableRow
+            key={hw.id}
+            hover
+            style={{ cursor: 'pointer' }}
+            onClick={() => onRowClick && onRowClick(hw)}
+          >
             <TableCell>{hw.subjectName}</TableCell>
             <TableCell>{hw.homeworkDate}</TableCell>
             <TableCell>{hw.instructions}</TableCell>
@@ -49,19 +56,23 @@ const HomeworkTable: React.FC<HomeworkTableProps> = ({ homework, onEdit, onDelet
                 <Link key={att.name} href={att.url} target="_blank" rel="noopener">{att.name}</Link>
               ))}
             </TableCell>
-            <TableCell>
-              <IconButton color="primary" onClick={() => onEdit(hw)}>
-                <EditIcon />
-              </IconButton>
-              <IconButton color="error" onClick={() => onDelete(hw.id)}>
-                <DeleteIcon />
-              </IconButton>
-            </TableCell>
+            {userRole === 2 && (
+              <TableCell
+                onClick={e => e.stopPropagation()}
+              >
+                <IconButton color="primary" onClick={() => onEdit(hw)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton color="error" onClick={() => onDelete(hw.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
+            )}
           </TableRow>
         ))}
         {!loading && homework.length === 0 && (
           <TableRow>
-            <TableCell colSpan={5} align="center">No homework found.</TableCell>
+            <TableCell colSpan={userRole === 2 ? 5 : 4} align="center">No homework found.</TableCell>
           </TableRow>
         )}
       </TableBody>
