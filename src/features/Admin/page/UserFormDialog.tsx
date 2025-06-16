@@ -38,6 +38,7 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ open, onClose, onSave, 
     onSave(form);
   };
 
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>{isEdit ? 'Edit User' : 'Add User'}</DialogTitle>
@@ -55,32 +56,31 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ open, onClose, onSave, 
           <Grid item xs={12}>
             <TextField label="Phone" name="phone" value={form.phone || ''} onChange={handleChange} fullWidth required />
           </Grid>
-          {isEdit && (
-            <>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Password"
-                  name="password"
-                  type="password"
-                  value={form.password || ''}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Confirm Password"
-                  name="confirmPassword"
-                  type="password"
-                  value={form.confirmPassword || ''}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                />
-              </Grid>
-            </>
-          )}
+          {/* Show password fields for both add and edit */}
+          <>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Password"
+                name="password"
+                type="password"
+                value={form.password || ''}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Confirm Password"
+                name="confirmPassword"
+                type="password"
+                value={form.confirmPassword || ''}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+          </>
           <Grid item xs={12}>
             <TextField
               select

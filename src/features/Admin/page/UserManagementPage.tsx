@@ -67,8 +67,12 @@ const UserManagementPage: React.FC = () => {
 
   const handleSave = async (form: Partial<User> & { password?: string; confirmPassword?: string }) => {
     try {
+      
+        // Get user from context or localStorage
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const preschoolId = user.preschoolId;
       if (editUser) {
-        const payload = { ...form };
+        const payload = { ...form,preschoolId };
         if (!payload.password) delete payload.password;
         if (!payload.confirmPassword) delete payload.confirmPassword;
         await updateUser(editUser.id, payload);
@@ -78,7 +82,7 @@ const UserManagementPage: React.FC = () => {
           setSnackbar({open: true, message: 'Password and Confirm Password are required', severity: 'error'});
           return;
         }
-        await addUser(form);
+        await addUser({ ...form,preschoolId });
         setSnackbar({open: true, message: 'User added', severity: 'success'});
       }
       setDialogOpen(false);
