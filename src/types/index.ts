@@ -13,6 +13,8 @@ export interface User {
   childAge?: string;
   classId?: number;      // <-- Add this
   divisionId?: number;   // <-- Add this
+  className?: string;
+  divisionName?: string;
 }
 
 export interface RegisterUser {

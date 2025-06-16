@@ -22,8 +22,8 @@ const getColumns = () => [
   { key: 'name', label: 'Name' },
   { key: 'email', label: 'Email' },
   { key: 'role', label: 'Role' },
-  { key: 'classId', label: 'Class' },
-  { key: 'divisionId', label: 'Division' },
+  { key: 'className', label: 'Class' },        // changed
+  { key: 'divisionName', label: 'Division' },  // changed
   { key: 'qualification', label: 'Qualification' },
   { key: 'childName', label: 'Child Name' },
   { key: 'childAge', label: 'Child Age' },
@@ -62,10 +62,10 @@ const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete, roleFilt
                     return <TableCell key="email">{user.email}</TableCell>;
                   case 'role':
                     return <TableCell key="role">{roleLabels[user.role] || user.role}</TableCell>;
-                  case 'classId':
-                    return <TableCell key="classId">{user.classId || '-'}</TableCell>;
-                  case 'divisionId':
-                    return <TableCell key="divisionId">{user.divisionId || '-'}</TableCell>;
+                  case 'className':
+                    return <TableCell key="className">{user.className || '-'}</TableCell>; // changed
+                  case 'divisionName':
+                    return <TableCell key="divisionName">{user.divisionName || '-'}</TableCell>; // changed
                   case 'qualification':
                     return <TableCell key="qualification">{user.role === 2 ? user.qualification || '-' : '-'}</TableCell>;
                   case 'childName':
