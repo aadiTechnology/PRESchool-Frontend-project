@@ -18,57 +18,22 @@ interface UserTableProps {
   roleFilter: number | '';
 }
 
-const getColumns = (roleFilter: number | '') => {
-  if (roleFilter === 1) {
-    return [
-      { key: 'name', label: 'Name' },
-      { key: 'email', label: 'Email' },
-      { key: 'role', label: 'Role' },
-      { key: 'edit', label: 'Edit' },
-      { key: 'delete', label: 'Delete' },
-    ];
-  }
-  if (roleFilter === 2) {
-    return [
-      { key: 'name', label: 'Name' },
-      { key: 'email', label: 'Email' },
-      { key: 'role', label: 'Role' },
-      { key: 'className', label: 'Class' },
-      { key: 'qualification', label: 'Qualification' },
-      { key: 'edit', label: 'Edit' },
-      { key: 'delete', label: 'Delete' },
-    ];
-  }
-  if (roleFilter === 3) {
-    return [
-      { key: 'name', label: 'Name' },
-      { key: 'email', label: 'Email' },
-      { key: 'role', label: 'Role' },
-      { key: 'childName', label: 'Child Name' },
-      { key: 'childAge', label: 'Child Age' },
-      { key: 'childClass', label: 'Child Class' },
-      { key: 'edit', label: 'Edit' },
-      { key: 'delete', label: 'Delete' },
-    ];
-  }
-  // Default: show all columns
-  return [
-    { key: 'name', label: 'Name' },
-    { key: 'email', label: 'Email' },
-    { key: 'role', label: 'Role' },
-    { key: 'className', label: 'Class' },
-    { key: 'qualification', label: 'Qualification' },
-    { key: 'childName', label: 'Child Name' },
-    { key: 'childAge', label: 'Child Age' },
-    { key: 'childClass', label: 'Child Class' },
-    { key: 'edit', label: 'Edit' },
-    { key: 'delete', label: 'Delete' },
-  ];
-};
+const getColumns = () => [
+  { key: 'name', label: 'Name' },
+  { key: 'email', label: 'Email' },
+  { key: 'role', label: 'Role' },
+  { key: 'classId', label: 'Class' },
+  { key: 'divisionId', label: 'Division' },
+  { key: 'qualification', label: 'Qualification' },
+  { key: 'childName', label: 'Child Name' },
+  { key: 'childAge', label: 'Child Age' },
+  { key: 'edit', label: 'Edit' },
+  { key: 'delete', label: 'Delete' },
+]; 
 
 const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete, roleFilter }) => {
-    const theme = useTheme();
-  const columns = getColumns(roleFilter);
+  const theme = useTheme();
+  const columns = getColumns();
 
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 500, overflowX: 'auto' }}>
@@ -77,10 +42,12 @@ const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete, roleFilt
           <TableRow>
             {columns.map(col => (
               <TableCell key={col.key}
-              sx={{
+                sx={{
                   backgroundColor: theme.palette.primary.main,
                   color: theme.palette.primary.contrastText,
-        }}>{col.label}</TableCell>
+                }}>
+                {col.label}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -95,16 +62,16 @@ const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete, roleFilt
                     return <TableCell key="email">{user.email}</TableCell>;
                   case 'role':
                     return <TableCell key="role">{roleLabels[user.role] || user.role}</TableCell>;
-                  case 'className':
-                    return <TableCell key="className">{user.className || '-'}</TableCell>;
+                  case 'classId':
+                    return <TableCell key="classId">{user.classId || '-'}</TableCell>;
+                  case 'divisionId':
+                    return <TableCell key="divisionId">{user.divisionId || '-'}</TableCell>;
                   case 'qualification':
-                    return <TableCell key="qualification">{user.qualification || '-'}</TableCell>;
+                    return <TableCell key="qualification">{user.role === 2 ? user.qualification || '-' : '-'}</TableCell>;
                   case 'childName':
-                    return <TableCell key="childName">{user.childName || '-'}</TableCell>;
+                    return <TableCell key="childName">{user.role === 3 ? user.childName || '-' : '-'}</TableCell>;
                   case 'childAge':
-                    return <TableCell key="childAge">{user.childAge || '-'}</TableCell>;
-                  case 'childClass':
-                    return <TableCell key="childClass">{user.childClass || '-'}</TableCell>;
+                    return <TableCell key="childAge">{user.role === 3 ? user.childAge || '-' : '-'}</TableCell>;
                   case 'edit':
                     return (
                       <TableCell key="edit">

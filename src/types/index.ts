@@ -6,13 +6,13 @@ export interface User {
   lastName: string;
   email: string;
   phone: string;
-  role: number; // 1, 2, or 3 from backend
+  role: number;
   preschoolId?: number;
-  className?: string;
   qualification?: string;
   childName?: string;
   childAge?: string;
-  childClass?: string;
+  classId?: number;      // <-- Add this
+  divisionId?: number;   // <-- Add this
 }
 
 export interface RegisterUser {
@@ -22,12 +22,10 @@ export interface RegisterUser {
   phone: string;
   password: string;
   confirmPassword: string;
-  role: string;
-  className?: string;      // For Teacher (instead of subject)
+  role: string;    // For Teacher (instead of subject)
   qualification?: string;     // For Teacher
   childName?: string;         // For Parent
-  childAge?: string;          // For Parent
-  childClass?: string;        // For Parent
+  childAge?: string;       // For Parent
 }
 
 export interface LoginUser {

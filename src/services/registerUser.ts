@@ -11,7 +11,6 @@ export interface RegisterUserParams {
   qualification?: string;
   childName?: string;
   childAge?: string;
-  childClass?: string;
 }
 
 export async function registerUser(params: RegisterUserParams): Promise<void> {

@@ -6,10 +6,7 @@ import * as yup from 'yup';
 import { Roles } from '../constants/roles';
 
 const roleOptions = [
-  { value: Roles.SUPER_ADMIN, label: 'Super Admin' },
-  { value: Roles.ADMIN, label: 'Admin' },
-  { value: Roles.TEACHER, label: 'Teacher' },
-  { value: Roles.PARENT, label: 'Parent' },
+  { value: Roles.SUPER_ADMIN, label: 'Super Admin' }
 ];
 
 const getValidationSchema = (role: string) => {
@@ -22,21 +19,7 @@ const getValidationSchema = (role: string) => {
     confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords do not match').required('Confirm Password is required'),
     role: yup.string().required('Role is required'),
   };
-  if (role === Roles.TEACHER.toString()) {
-    return yup.object().shape({
-      ...base,
-      className: yup.string().required('Class is required'),
-      qualification: yup.string().required('Qualification is required'),
-    });
-  }
-  if (role === Roles.PARENT.toString()) {
-    return yup.object().shape({
-      ...base,
-      childName: yup.string().required('Child Name is required'),
-      childAge: yup.string().required('Child Age is required'),
-      childClass: yup.string().required('Child Class is required'),
-    });
-  }
+  
   return yup.object().shape(base);
 };
 
@@ -48,12 +31,7 @@ export default function Register() {
     phone: '',
     password: '',
     confirmPassword: '',
-    role: Roles.TEACHER.toString(),
-    className: '', // <-- Add this
-    qualification: '',
-    childName: '',
-    childAge: '',
-    childClass: '',
+    role:'',
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const navigate = useNavigate();
@@ -70,15 +48,6 @@ export default function Register() {
     try {
       await schema.validate(formData, { abortEarly: false });
       const payload: any = { ...formData };
-      if (formData.role !== Roles.TEACHER.toString()) {
-        delete payload.className;
-        delete payload.qualification;
-      }
-      if (formData.role !== Roles.PARENT.toString()) {
-        delete payload.childName;
-        delete payload.childAge;
-        delete payload.childClass;
-      }
       await registerUser(payload);
       alert('User registered successfully');
       navigate('/login');
@@ -157,66 +126,7 @@ export default function Register() {
               ))}
             </TextField>
           </Grid>
-          {/* Teacher fields */}
-          {formData.role === Roles.TEACHER.toString() && (
-            <>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Class"
-                  name="className"
-                  value={formData.className}
-                  onChange={handleChange}
-                  error={!!errors.className}
-                  helperText={errors.className}
-                  select
-                >
-                  <MenuItem value="">Select Class</MenuItem>
-                  <MenuItem value="Nursery">Nursery</MenuItem>
-                  <MenuItem value="LKG">LKG</MenuItem>
-                  <MenuItem value="UKG">UKG</MenuItem>
-                  {/* Add more classes as needed */}
-                </TextField>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Qualification"
-                  name="qualification"
-                  value={formData.qualification}
-                  onChange={handleChange}
-                  error={!!errors.qualification}
-                  helperText={errors.qualification}
-                />
-              </Grid>
-            </>
-          )}
-          {/* Parent fields */}
-          {formData.role === Roles.PARENT.toString() && (
-            <>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth label="Child Name" name="childName"
-                  value={formData.childName} onChange={handleChange}
-                  error={!!errors.childName} helperText={errors.childName}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth label="Child Age" name="childAge"
-                  value={formData.childAge} onChange={handleChange}
-                  error={!!errors.childAge} helperText={errors.childAge}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth label="Child Class" name="childClass"
-                  value={formData.childClass} onChange={handleChange}
-                  error={!!errors.childClass} helperText={errors.childClass}
-                />
-              </Grid>
-            </>
-          )}
+          
           <Grid item xs={12}>
             <Box mt={2}>
               <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>
