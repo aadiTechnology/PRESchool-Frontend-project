@@ -10,17 +10,17 @@ const AssignHomeworkPage: React.FC = () => {
   const [subjects, setSubjects] = useState<SubjectOption[]>([]);
   const [fetchingSubjects, setFetchingSubjects] = useState(true);
 
-  // Get teacher's assigned class from user info (localStorage or context)
+  // Get teacher's divisionId from user info (localStorage)
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const classId = user.classId || user.class_id || '';
-  const className = user.className || '';
+  const divisionId = user.divisionId || '';
+  const classId = user.classId || '';
 
   useEffect(() => {
     async function fetchSubjects() {
       setFetchingSubjects(true);
       try {
-        if (className) {
-          const subjectList = await fetchSubjectsForClass(className);
+        if (classId) {
+          const subjectList = await fetchSubjectsForClass(classId);
           setSubjects(subjectList);
         } else {
           setSubjects([]);
@@ -32,12 +32,15 @@ const AssignHomeworkPage: React.FC = () => {
       }
     }
     fetchSubjects();
-  }, [className]);
+  }, [divisionId]);
 
   const handleSubmit = async (data: AssignHomeworkFormValues) => {
     setLoading(true);
     try {
-      await assignHomework({ ...data });
+      await assignHomework({
+        ...data,
+        divisionId,
+      });
       setSnackbar({open: true, message: 'Homework assigned successfully.', severity: 'success'});
     } catch (error: any) {
       setSnackbar({open: true, message: error?.message || 'Error assigning homework.', severity: 'error'});
@@ -53,7 +56,6 @@ const AssignHomeworkPage: React.FC = () => {
   return (
     <>
       <AssignHomeworkForm
-        classId={classId}
         subjects={subjects}
         onSubmit={handleSubmit}
         loading={loading}

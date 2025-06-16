@@ -10,7 +10,7 @@ function getAuthHeaders() {
   };
 }
 
-export const assignHomework = async (formData: AssignHomeworkFormValues) => {
+export const assignHomework = async (formData: AssignHomeworkFormValues & { divisionId: number | string }) => {
   let attachments: any[] = [];
   if (formData.attachments && formData.attachments.length > 0) {
     attachments = await Promise.all(
@@ -26,7 +26,7 @@ export const assignHomework = async (formData: AssignHomeworkFormValues) => {
   }
 
   const payload = {
-    classId: formData.classId,
+    divisionId: formData.divisionId,
     homeworkDate: formData.homeworkDate,
     instructions: formData.instructions,
     subjectId: formData.subjectId,

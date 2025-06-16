@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -12,7 +12,6 @@ import {
   FormControl,
   Tooltip,
 } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
 
 export interface SubjectOption {
   id: number;
@@ -20,7 +19,6 @@ export interface SubjectOption {
 }
 
 export interface AssignHomeworkFormValues {
-  classId: number;
   subjectId: number | '';
   homeworkDate: string;
   instructions: string;
@@ -28,50 +26,69 @@ export interface AssignHomeworkFormValues {
 }
 
 interface Props {
-  classId: number;
   subjects: SubjectOption[];
   onSubmit: (data: AssignHomeworkFormValues) => void;
   loading?: boolean;
 }
 
 const AssignHomeworkForm: React.FC<Props> = ({
-  classId,
   subjects,
   onSubmit,
   loading,
 }) => {
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    watch,
-    formState: { errors },
-    trigger,
-  } = useForm<AssignHomeworkFormValues>({
-    defaultValues: {
-      subjectId: '',
-      homeworkDate: '',
-      instructions: '',
-      attachments: [],
-    },
-    mode: 'onBlur',
+  const [form, setForm] = useState<AssignHomeworkFormValues>({
+    subjectId: '',
+    homeworkDate: '',
+    instructions: '',
+    attachments: [],
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // Custom validation for required fields
-  const validateNotEmpty = (value: any) =>
-    value !== undefined && value !== null && value !== '' ? true : 'This field is required';
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name as string]: value,
+    }));
+    setErrors({});
+  };
 
-  const attachments = watch('attachments');
+  const handleSelectChange = (e: any) => {
+    setForm((prev) => ({
+      ...prev,
+      subjectId: e.target.value,
+    }));
+    setErrors({});
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setValue('attachments', Array.from(e.target.files));
-      trigger('attachments');
+    const files = e.target.files;
+    setForm((prev) => ({
+      ...prev,
+      attachments: files ? Array.from(files) : [],
+    }));
+    setErrors({});
+  };
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!form.subjectId) newErrors.subjectId = 'Please select Subject';
+    if (!form.homeworkDate) newErrors.homeworkDate = 'Please select date';
+    if (!form.instructions) newErrors.instructions = 'Enter instructions';
+    // attachments are NOT mandatory anymore
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      onSubmit(form);
     }
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 4 }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
         Assign Homework
       </Typography>
@@ -80,72 +97,62 @@ const AssignHomeworkForm: React.FC<Props> = ({
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!errors.subjectId}>
             <InputLabel>Subject</InputLabel>
-            <Controller
+            <Select
               name="subjectId"
-              control={control}
-              rules={{ validate: validateNotEmpty }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  label="Subject"
-                  displayEmpty
-                  value={field.value === undefined ? '' : field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
-                >
-                  <MenuItem value="">
-                    <em>Please select subject</em>
-                  </MenuItem>
-                  {subjects.map((subj) => (
-                    <MenuItem key={subj.id} value={subj.id}>
-                      {subj.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+              value={form.subjectId}
+              label="Subject"
+              displayEmpty
+              onChange={handleSelectChange}
+            >
+              <MenuItem value="">
+                <em>Please select Subject</em>
+              </MenuItem>
+              {subjects.length === 0 && (
+                <MenuItem value="" disabled>
+                  No Subject found. Contact your admin to get assigned.
+                </MenuItem>
               )}
-            />
-            <Typography color="error" variant="caption">
-              {errors.subjectId?.message}
-            </Typography>
+              {subjects.map((subj) => (
+                <MenuItem key={subj.id} value={subj.id}>
+                  {subj.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.subjectId && (
+              <Typography color="error" variant="caption">
+                {errors.subjectId}
+              </Typography>
+            )}
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Controller
+          <TextField
             name="homeworkDate"
-            control={control}
-            rules={{ validate: validateNotEmpty }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Homework Date"
-                type="date"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                placeholder="Select date"
-                error={!!errors.homeworkDate}
-                helperText={errors.homeworkDate?.message}
-              />
-            )}
+            label="Homework Date"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            placeholder="Select date"
+            value={form.homeworkDate}
+            onChange={handleChange}
+            error={!!errors.homeworkDate}
+            helperText={errors.homeworkDate}
           />
         </Grid>
         <Grid item xs={12}>
-          <Controller
+          <TextField
             name="instructions"
-            control={control}
-            rules={{ validate: validateNotEmpty }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Instructions"
-                placeholder="Enter instructions"
-                fullWidth
-                multiline
-                minRows={4}
-                error={!!errors.instructions}
-                helperText={errors.instructions?.message}
-              />
-            )}
+            label="Instructions"
+            placeholder="Enter instructions"
+            fullWidth
+            multiline
+            minRows={4}
+            value={form.instructions}
+            onChange={handleChange}
+            error={!!errors.instructions}
+            helperText={errors.instructions}
           />
         </Grid>
         <Grid item xs={12}>
@@ -171,10 +178,15 @@ const AssignHomeworkForm: React.FC<Props> = ({
                 />
               </Button>
             </Tooltip>
-            {attachments && attachments.length > 0 && (
+            {errors.attachments && (
+              <Typography color="error" variant="caption" display="block" mt={1}>
+                {errors.attachments}
+              </Typography>
+            )}
+            {form.attachments && form.attachments.length > 0 && (
               <Box mt={2}>
                 <Typography variant="body2" color="text.secondary">
-                  {attachments.length} file(s) selected
+                  {form.attachments.length} file(s) selected
                 </Typography>
               </Box>
             )}

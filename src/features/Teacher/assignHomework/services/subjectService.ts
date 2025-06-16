@@ -10,8 +10,9 @@ function getAuthHeaders() {
   };
 }
 
-export const fetchSubjectsForClass = async (className: string): Promise<SubjectOption[]> => {
-  const url = `${API_URL}?className=${encodeURIComponent(className)}`;
+// Fetch subjects for a division
+export const fetchSubjectsForClass = async (classId: number | string): Promise<SubjectOption[]> => {
+  const url = `${API_URL}?classId=${encodeURIComponent(classId)}`;
   const res = await fetch(url, {
     method: 'GET',
     headers: getAuthHeaders(),
