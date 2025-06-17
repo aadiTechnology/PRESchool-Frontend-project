@@ -15,7 +15,7 @@ import SidebarMenu from './SidebarMenu';
 import ProfileMenu from './ProfileMenu'; // ProfileMenu component
 import { Link } from 'react-router-dom';
 
-const schoolName = 'Greenfield International School';
+const schoolName = 'Smartkidz Wakad';
 const logoUrl = '/images/happy_kids1.png'; // Corrected and simplified
 
 const Header1: React.FC = () => {
