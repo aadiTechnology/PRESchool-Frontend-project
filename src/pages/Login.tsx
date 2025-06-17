@@ -5,7 +5,7 @@ import { loginUser } from '../services/loginUser';
 import useAuth from '../hooks/useAuth';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState(''); // <-- renamed from email
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(false);
   const [error, setError] = useState('');
@@ -20,7 +20,8 @@ const Login = () => {
   const clickLogin = async () => {
     setError('');
     try {
-      const response = await loginUser(email, password);
+      const response = await loginUser(userId, password); // <-- pass userId
+      // setUser(response.user);
       localStorage.setItem('token', response.access_token);
       localStorage.setItem('user', JSON.stringify(response.user));
       setIsLogin(true);
@@ -52,15 +53,14 @@ const Login = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Enter your registered email"
+              label="Email or Phone Number"
               variant="outlined"
               fullWidth
               margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
               required
-                InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
-
+              InputLabelProps={{ shrink: true }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -75,8 +75,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyUp={handlePasswordKeyUp}
                 required
-                  InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
-
+                InputLabelProps={{ shrink: true }}
               />
             </Tooltip>
           </Grid>
