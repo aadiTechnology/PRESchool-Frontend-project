@@ -25,6 +25,9 @@ const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/"
+          element={<AuthLayout><Login /></AuthLayout>}
+        />
         <Route path="/login"
           element={<AuthLayout><Login /></AuthLayout>}
         />
