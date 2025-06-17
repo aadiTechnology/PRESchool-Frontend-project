@@ -106,8 +106,9 @@ const Login = () => {
               size={isXs ? 'small' : 'medium'}
               value={email}
               onChange={e => setEmail(e.target.value)}
-              autoComplete="username"
+              autoComplete="off"
               sx={{ mb: 1 }}
+              InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
             />
           </Grid>
           <Grid item xs={12}>
@@ -119,8 +120,9 @@ const Login = () => {
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              autoComplete="current-password"
+              autoComplete="off"
               sx={{ mb: 1 }}
+              InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
               onKeyUp={e => setCapsLock(e.getModifierState && e.getModifierState('CapsLock'))}
             />
             {capsLock && (
