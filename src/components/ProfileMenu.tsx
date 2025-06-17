@@ -22,22 +22,28 @@ const ProfileMenu: React.FC = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
+  // Get user details from localStorage
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userName =
+    user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.name || 'User';
+  const userRole =
+    user.role === 2 ? 'Teacher' : user.role === 3 ? 'Parent' : '';
+  const userClass = user.className || user.class || '';
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const handleLogout = () => {
-    logout(); // should clear tokens and user info
-    localStorage.clear(); // or remove specific keys like localStorage.removeItem('token')
-    sessionStorage.clear(); // if you use sessionStorage
+    logout();
+    localStorage.clear();
+    sessionStorage.clear();
     navigate('/login');
   };
-
-  const userName = 'Ms. Anubha Brajesh';
-  const userRole = 'Teacher';
 
   return (
     <>
@@ -81,17 +87,26 @@ const ProfileMenu: React.FC = () => {
               <Typography variant="subtitle2" fontWeight="bold" color="primary">
                 {userName}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {userRole}
-              </Typography>
+              {/* <Typography variant="caption" color="text.secondary">
+                {userClass}
+              </Typography> */}
+              {(user.role === 2 || user.role === 3) && userClass && (
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  display="block"
+                >
+                  Class: {userClass}
+                </Typography>
+              )}
             </Box>
           </Box>
         </Box>
 
-        <Divider />
+        {/* <Divider /> */}
 
         {/* Menu Options */}
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" />
           </ListItemIcon>
@@ -108,7 +123,7 @@ const ProfileMenu: React.FC = () => {
             <LockIcon fontSize="small" />
           </ListItemIcon>
           Change Password
-        </MenuItem>
+        </MenuItem> */}
 
         <Divider />
 
