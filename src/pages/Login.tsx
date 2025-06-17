@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Container, Tooltip, Grid, Paper, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { TextField, Button, Typography, Container, Tooltip, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/loginUser';
 import useAuth from '../hooks/useAuth';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,16 +12,6 @@ const Login = () => {
   const [capsLock, setCapsLock] = useState(false);
   const navigate = useNavigate();
   const { login: setUser } = useAuth();
-
-  const theme = useTheme();
-  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
-  const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isMdUp = useMediaQuery(theme.breakpoints.up('md'));
-
-  // Responsive logo size
-  let logoSize = 120;
-  if (isXs) logoSize = 80;
-  else if (isSm) logoSize = 100;
 
   const handlePasswordKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setCapsLock(e.getModifierState && e.getModifierState('CapsLock'));
@@ -51,122 +41,73 @@ const Login = () => {
   }, [isLogin, navigate]);
 
   return (
-    <Container
-      maxWidth="xs"
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: { xs: '#f5f5f5', md: '#fff' },
-        px: { xs: 0, sm: 2 },
-      }}
-    >
-      <Paper
-        elevation={6}
-        sx={{
-          p: { xs: 2, sm: 4 },
-          width: '100%',
-          maxWidth: 400,
-          mx: 'auto',
-          borderRadius: { xs: 0, sm: 2 },
-        }}
-      >
+    <Container maxWidth="xs" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <Paper elevation={6} sx={{ p: { xs: 2, sm: 4 }, width: '100%' }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography
-              variant={isXs ? 'h5' : 'h4'}
-              align="center"
-              gutterBottom
-              sx={{
-                fontWeight: 700,
-                fontSize: { xs: '1.5rem', sm: '2rem', md: '2.2rem' },
-              }}
-            >
-              Welcome to 
+            <Typography variant="h4" align="center" gutterBottom>
+              Welcome to
             </Typography>
-            <img
-              src="/images/SMARTKIDZ_LOGO.png"
-              alt="Smartkidz Logo"
-              style={{
-                display: 'block',
-                margin: '16px auto',
-                maxWidth: logoSize,
-                maxHeight: logoSize,
-                width: '100%',
-                height: 'auto',
-              }}
-            />
+            <img src="/images/smartkidz_logo.png" alt="Smartkidz Logo" style={{ display: 'block', margin: '0 auto', width: '100px' }} />
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Email"
+              label="Enter your registered email"
               variant="outlined"
               fullWidth
-              size={isXs ? 'small' : 'medium'}
+              margin="normal"
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              autoComplete="off"
-              sx={{ mb: 1 }}
-              InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
+              onChange={(e) => setEmail(e.target.value)}
+              required
+                InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
+
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              label="Password"
-              variant="outlined"
+            <Tooltip title={capsLock ? 'Ensure your caps lock is off.' : ''} placement="right">
+              <TextField
+                label="Enter your password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyUp={handlePasswordKeyUp}
+                required
+                  InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
+
+              />
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              onClick={clickLogin}
+              variant="contained"
+              color="primary"
               fullWidth
-              size={isXs ? 'small' : 'medium'}
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              autoComplete="off"
-              sx={{ mb: 1 }}
-              InputLabelProps={{ shrink: true }} // <-- This keeps the label at the top
-              onKeyUp={e => setCapsLock(e.getModifierState && e.getModifierState('CapsLock'))}
-            />
-            {capsLock && (
-              <Typography color="warning.main" variant="caption">
-                Warning: Caps Lock is ON
-              </Typography>
-            )}
+              sx={{ mt: 2 }}
+            >
+              Login
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="body2"
+              align="right"
+              sx={{ mt: 1, cursor: 'pointer', color: 'primary.main' }}
+              onClick={() => navigate('/forgot-password')}
+            >
+              Forgot Password?
+            </Typography>
           </Grid>
           {error && (
             <Grid item xs={12}>
-              <Typography color="error" align="center" variant="body2">
+              <Typography color="error" align="center" sx={{ mt: 2 }}>
                 {error}
               </Typography>
             </Grid>
           )}
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              size={isXs ? 'small' : 'medium'}
-              disabled={isLogin}
-              sx={{
-                py: { xs: 1, sm: 1.5 },
-                fontSize: { xs: '1rem', sm: '1.1rem' },
-                mt: 1,
-              }}
-              onClick={async () => {
-                setIsLogin(true);
-                setError('');
-                try {
-                  const user = await loginUser(email, password);
-                  setUser(user, password);
-                  navigate('/');
-                } catch (err: any) {
-                  setError(err?.message || 'Login failed');
-                } finally {
-                  setIsLogin(false);
-                }
-              }}
-            >
-              {isLogin ? 'Logging in...' : 'Login'}
-            </Button>
-          </Grid>
         </Grid>
       </Paper>
     </Container>
