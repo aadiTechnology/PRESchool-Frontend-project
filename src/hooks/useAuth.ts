@@ -24,17 +24,35 @@ export const useAuth = () => {
     }
   };
 
-  const register = async (userData: { firstName: string; lastName: string; email: string; phone: string; password: string; confirmPassword: string; role: string }) => {
+  // Updated register to match backend requirements
+  const register = async (userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    classId: number;
+    divisionId: number;
+    preschoolId: number;
+    role: number;
+    childName: string;
+    childAge: number;
+  }) => {
     try {
       const registerParams = {
-        first_name: userData.firstName,
-        last_name: userData.lastName,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
         email: userData.email,
         phone: userData.phone,
         password: userData.password,
         confirmPassword: userData.confirmPassword,
+        classId: userData.classId,
+        divisionId: userData.divisionId,
+        preschoolId: userData.preschoolId,
         role: userData.role,
-        preschool_id: 0
+        childName: userData.childName,
+        childAge: userData.childAge,
       };
       await authService.register(registerParams);
       return;

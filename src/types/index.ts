@@ -24,10 +24,12 @@ export interface RegisterUser {
   phone: string;
   password: string;
   confirmPassword: string;
-  role: string;    // For Teacher (instead of subject)
-  qualification?: string;     // For Teacher
-  childName?: string;         // For Parent
-  childAge?: string;       // For Parent
+  role: number;
+  preschoolId: number;
+  classId: number;
+  divisionId: number;
+  childName: string;
+  childAge: number;
 }
 
 export interface LoginUser {
