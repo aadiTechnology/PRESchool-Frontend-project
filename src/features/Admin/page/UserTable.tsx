@@ -37,33 +37,10 @@ const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete, roleFilt
   const theme = useTheme();
   const columns = getColumns();
 
-  // Export to Excel handler
-  const handleExportExcel = () => {
-    // Prepare data for export (exclude edit/delete columns)
-    const exportColumns = columns.filter(col => col.key !== 'edit' && col.key !== 'delete');
-    const data = users.map(user => ({
-      Name: `${user.firstName} ${user.lastName}`,
-      Email: user.email,
-      Role: roleLabels[user.role] || user.role,
-      Class: user.className || '-',
-      Division: user.divisionName || '-',
-      Qualification: user.role === 2 ? user.qualification || '-' : '-',
-      'Child Name': user.role === 3 ? user.childName || '-' : '-',
-      'Child Age': user.role === 3 ? user.childAge || '-' : '-',
-    }));
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
-    XLSX.writeFile(workbook, 'users.xlsx');
-  };
+  
 
   return (
     <Box>
-      <Box sx={{ textAlign: 'right', mb: 1 }}>
-        <Button variant="outlined" color="primary" onClick={handleExportExcel}>
-          Export to Excel
-        </Button>
-      </Box>
       <TableContainer component={Paper} sx={{ maxHeight: 500, overflowX: 'auto' }}>
         <Table stickyHeader>
           <TableHead>

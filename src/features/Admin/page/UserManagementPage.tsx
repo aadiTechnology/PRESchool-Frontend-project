@@ -4,6 +4,7 @@ import UserTable from './UserTable';
 import UserFormDialog from './UserFormDialog';
 import { getUsers, addUser, updateUser, deleteUser } from '../services/userService';
 import { User } from '../../../types';
+import * as XLSX from 'xlsx';
 
 // --- Add these imports for class/division fetching ---
 import { fetchClasses, ClassOption } from '../services/classService';
@@ -124,6 +125,39 @@ const UserManagementPage: React.FC = () => {
     }
   };
 
+  // Export to Excel handler (moved from UserTable)
+  const handleExportExcel = () => {
+    const columns = [
+      { key: 'name', label: 'Name' },
+      { key: 'email', label: 'Email' },
+      { key: 'role', label: 'Role' },
+      { key: 'className', label: 'Class' },
+      { key: 'divisionName', label: 'Division' },
+      { key: 'qualification', label: 'Qualification' },
+      { key: 'childName', label: 'Child Name' },
+      { key: 'childAge', label: 'Child Age' },
+    ];
+    const roleLabels: Record<number, string> = {
+      1: 'admin',
+      2: 'teacher',
+      3: 'parent',
+    };
+    const data = filteredUsers.map(user => ({
+      Name: `${user.firstName} ${user.lastName}`,
+      Email: user.email,
+      Role: roleLabels[user.role] || user.role,
+      Class: user.className || '-',
+      Division: user.divisionName || '-',
+      Qualification: user.role === 2 ? user.qualification || '-' : '-',
+      'Child Name': user.role === 3 ? user.childName || '-' : '-',
+      'Child Age': user.role === 3 ? user.childAge || '-' : '-',
+    }));
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
+    XLSX.writeFile(workbook, 'users.xlsx');
+  };
+
   // --- Filter users by role, class, and division ---
   const filteredUsers = users
     .filter(user => (roleFilter ? user.role === roleFilter : true))
@@ -161,7 +195,7 @@ const UserManagementPage: React.FC = () => {
           </Button>
         </Grid>
       </Grid>
-      <Grid container spacing={2} mb={2}>
+      <Grid container spacing={2} mb={2} alignItems="center">
         <Grid item xs={12} sm={4} md={3}>
           <TextField
             select
@@ -206,6 +240,11 @@ const UserManagementPage: React.FC = () => {
               <MenuItem key={opt.id} value={opt.id}>{opt.name}</MenuItem>
             ))}
           </TextField>
+        </Grid>
+        <Grid item xs={12} sm={12} md={3}>
+          <Button variant="outlined" color="primary" onClick={handleExportExcel} fullWidth>
+            Export to Excel
+          </Button>
         </Grid>
       </Grid>
       <UserTable users={filteredUsers} onEdit={handleEdit} onDelete={handleDelete} roleFilter={roleFilter} />
