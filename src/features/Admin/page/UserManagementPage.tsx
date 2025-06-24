@@ -5,6 +5,7 @@ import UserFormDialog from './UserFormDialog';
 import { getUsers, addUser, updateUser, deleteUser } from '../services/userService';
 import { User } from '../../../types';
 import * as XLSX from 'xlsx';
+import DownloadIcon from '@mui/icons-material/Download'; // Add this import at the top
 
 // --- Add these imports for class/division fetching ---
 import { fetchClasses, ClassOption } from '../services/classService';
@@ -242,8 +243,13 @@ const UserManagementPage: React.FC = () => {
           </TextField>
         </Grid>
         <Grid item xs={12} sm={12} md={3}>
-          <Button variant="outlined" color="primary" onClick={handleExportExcel} fullWidth>
-            Export to Excel
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleExportExcel}
+            fullWidth
+            startIcon={<DownloadIcon />} // Use the download icon
+          >
           </Button>
         </Grid>
       </Grid>
