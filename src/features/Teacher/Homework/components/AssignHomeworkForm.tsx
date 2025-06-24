@@ -106,7 +106,7 @@ const AssignHomeworkForm: React.FC<Props> = ({
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <FormControl fullWidth error={!!errors.subjectId}>
-            <InputLabel>Subject</InputLabel>
+            <InputLabel shrink>Subject</InputLabel>
             <Select
               name="subjectId"
               value={form.subjectId}
@@ -163,7 +163,7 @@ const AssignHomeworkForm: React.FC<Props> = ({
             helperText={errors.instructions}
           />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Paper
             variant="outlined"
             sx={{ p: 3, borderStyle: 'dashed', textAlign: 'center' }}
@@ -199,7 +199,7 @@ const AssignHomeworkForm: React.FC<Props> = ({
               </Box>
             )}
           </Paper>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sx={{ textAlign: 'right' }}>
           <Button
             type="submit"
