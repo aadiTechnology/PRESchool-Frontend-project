@@ -5,7 +5,7 @@ export interface ClassOption {
 
 export async function fetchClasses(preschoolId: number): Promise<ClassOption[]> {
   const token = localStorage.getItem('token');
-  const res = await fetch(`http://localhost:8000/api/v1/auth/classes?preschoolId=${preschoolId}`, {
+  const res = await fetch(`http://apinew.smartkidzwakad.com/api/v1/auth/classes?preschoolId=${preschoolId}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,

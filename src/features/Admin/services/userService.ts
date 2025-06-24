@@ -1,6 +1,6 @@
 import { User } from '../../../types';
 
-const API_URL = 'http://localhost:8000/api/v1/auth/users';
+const API_URL = 'http://apinew.smartkidzwakad.com/api/v1/auth/users';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('token');

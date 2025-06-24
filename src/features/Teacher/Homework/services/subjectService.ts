@@ -1,6 +1,6 @@
 import { SubjectOption } from '../components/AssignHomeworkForm';
 
-const API_URL = 'http://localhost:8000/api/v1/auth/subjects';
+const API_URL = 'http://apinew.smartkidzwakad.com/api/v1/auth/subjects';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('token');
