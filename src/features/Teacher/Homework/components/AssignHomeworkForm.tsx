@@ -202,6 +202,21 @@ const AssignHomeworkForm: React.FC<Props> = ({
         </Grid> */}
         <Grid item xs={12} sx={{ textAlign: 'right' }}>
           <Button
+            type="button"
+            variant="outlined"
+            color="secondary"
+            sx={{ mr: 2 }}
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                // If this form is in a dialog, close the dialog by dispatching a custom event
+                window.dispatchEvent(new CustomEvent('closeAssignHomeworkDialog'));
+              }
+            }}
+            disabled={loading}
+          >
+            Cancel
+          </Button>
+          <Button
             type="submit"
             variant="contained"
             color="primary"

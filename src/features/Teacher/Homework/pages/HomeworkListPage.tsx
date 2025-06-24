@@ -122,6 +122,11 @@ const HomeworkListPage: React.FC = () => {
   const handleRowClick = (hw: HomeworkItem) => {
     navigate(`/teacher/homework/${hw.id}`);
   };
+  useEffect(() => {
+    const handleClose = () => setDialogOpen(false);
+    window.addEventListener('closeAssignHomeworkDialog', handleClose);
+    return () => window.removeEventListener('closeAssignHomeworkDialog', handleClose);
+  }, []);
 
   return (
     <Box>
