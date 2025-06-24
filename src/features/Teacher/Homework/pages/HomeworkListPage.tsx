@@ -126,7 +126,6 @@ const HomeworkListPage: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>Homework</Typography>
-      <Typography variant="h6" gutterBottom>Assigned Homework</Typography>
       {userRole === 2 && (
         <Button
           variant="contained"
@@ -146,7 +145,7 @@ const HomeworkListPage: React.FC = () => {
         onRowClick={handleRowClick}
       />
       <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
-        <DialogTitle>{editHomework ? 'Edit Homework' : 'Add Homework'}</DialogTitle>
+        {/* <DialogTitle>{editHomework ? 'Edit Homework' : 'Add Homework'}</DialogTitle> */}
         <DialogContent>
           <AssignHomeworkForm
             subjects={subjects}
