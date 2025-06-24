@@ -5,6 +5,10 @@ import UserFormDialog from './UserFormDialog';
 import { getUsers, addUser, updateUser, deleteUser } from '../services/userService';
 import { User } from '../../../types';
 
+// --- Add these imports for class/division fetching ---
+import { fetchClasses, ClassOption } from '../services/classService';
+import { fetchDivisions, DivisionOption } from '../services/divisionService';
+
 const roleLabels: Record<number, string> = {
   1: 'admin',
   2: 'teacher',
@@ -27,6 +31,12 @@ const UserManagementPage: React.FC = () => {
   const [snackbar, setSnackbar] = useState<{open: boolean, message: string, severity: 'success' | 'error'}>({open: false, message: '', severity: 'success'});
   const [roleFilter, setRoleFilter] = useState<number | ''>('');
 
+  // --- Add these states for class/division filter ---
+  const [classOptions, setClassOptions] = useState<ClassOption[]>([]);
+  const [divisionOptions, setDivisionOptions] = useState<DivisionOption[]>([]);
+  const [classFilter, setClassFilter] = useState<number | ''>('');
+  const [divisionFilter, setDivisionFilter] = useState<number | ''>('');
+
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -38,6 +48,29 @@ const UserManagementPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // --- Fetch classes on mount ---
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const preschoolId = user.preschoolId;
+    if (preschoolId) {
+      fetchClasses(preschoolId)
+        .then(setClassOptions)
+        .catch(() => setClassOptions([]));
+    }
+  }, []);
+
+  // --- Fetch divisions when classFilter changes ---
+  useEffect(() => {
+    if (classFilter) {
+      fetchDivisions(classFilter)
+        .then(setDivisionOptions)
+        .catch(() => setDivisionOptions([]));
+    } else {
+      setDivisionOptions([]);
+    }
+    setDivisionFilter(''); // Reset division filter when class changes
+  }, [classFilter]);
 
   useEffect(() => {
     fetchUsers();
@@ -67,7 +100,6 @@ const UserManagementPage: React.FC = () => {
 
   const handleSave = async (form: Partial<User> & { password?: string; confirmPassword?: string }) => {
     try {
-      
         // Get user from context or localStorage
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         const preschoolId = user.preschoolId;
@@ -92,10 +124,11 @@ const UserManagementPage: React.FC = () => {
     }
   };
 
-  // Filter users by role
-  const filteredUsers = roleFilter
-    ? users.filter((user) => user.role === roleFilter)
-    : users;
+  // --- Filter users by role, class, and division ---
+  const filteredUsers = users
+    .filter(user => (roleFilter ? user.role === roleFilter : true))
+    .filter(user => (classFilter ? user.classId === classFilter : true))
+    .filter(user => (divisionFilter ? user.divisionId === divisionFilter : true));
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -140,6 +173,37 @@ const UserManagementPage: React.FC = () => {
           >
             {roleFilterOptions.map(opt => (
               <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <TextField
+            select
+            label="Filter by Class"
+            value={classFilter}
+            onChange={e => setClassFilter(e.target.value === '' ? '' : Number(e.target.value))}
+            fullWidth
+            size="small"
+          >
+            <MenuItem value="">All Classes</MenuItem>
+            {classOptions.map(opt => (
+              <MenuItem key={opt.id} value={opt.id}>{opt.name}</MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <TextField
+            select
+            label="Filter by Division"
+            value={divisionFilter}
+            onChange={e => setDivisionFilter(e.target.value === '' ? '' : Number(e.target.value))}
+            fullWidth
+            size="small"
+            disabled={!classFilter}
+          >
+            <MenuItem value="">All Divisions</MenuItem>
+            {divisionOptions.map(opt => (
+              <MenuItem key={opt.id} value={opt.id}>{opt.name}</MenuItem>
             ))}
           </TextField>
         </Grid>
