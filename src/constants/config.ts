@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8000/api/v1/auth';
+export const API_URL = process.env.REACT_APP_API_URL || 'http://apinew.smartkidzwakad.com';
 export const JWT_SECRET = 'your_jwt_secret_key';
 export const TOKEN_EXPIRY = '1h'; // Token expiry time
 export const CACHE_EXPIRY = 3600; // Cache expiry time in seconds
