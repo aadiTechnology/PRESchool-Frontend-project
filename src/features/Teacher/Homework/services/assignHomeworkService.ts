@@ -1,7 +1,7 @@
 import { AssignHomeworkFormValues } from '../components/AssignHomeworkForm';
 
-const ADD_API_URL = 'http://localhost:8000/api/v1/auth/assign-homework';
-const EDIT_API_URL = 'http://localhost:8000/api/v1/auth/homeworks';
+const ADD_API_URL = 'http://apinew.smartkidzwakad.com/api/v1/auth/assign-homework';
+const EDIT_API_URL = 'http://apinew.smartkidzwakad.com/api/v1/auth/homeworks';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('token');

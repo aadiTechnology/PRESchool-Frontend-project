@@ -1,5 +1,5 @@
 export async function loginUser(userId: string, password: string) {
-  const response = await fetch('http://localhost:8000/api/v1/auth/login', {
+  const response = await fetch('http://apinew.smartkidzwakad.com/api/v1/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
