@@ -9,14 +9,14 @@ const OtpVerification = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get email from location state or localStorage
+  // Get email and otp from location state or localStorage
   const email = location.state?.email || localStorage.getItem('resetEmail') || '';
+  const receivedOtp = location.state?.otp || null;
 
   const handleVerifyOtp = async () => {
     setError('');
     try {
       await verifyOtp(email, otp);
-      // Store email for reset password step
       localStorage.setItem('resetEmail', email);
       navigate('/reset-password');
     } catch (err: any) {
@@ -33,6 +33,13 @@ const OtpVerification = () => {
               OTP Verification
             </Typography>
           </Grid>
+          {receivedOtp && (
+            <Grid item xs={12}>
+              <Typography align="center" color="primary" sx={{ mt: 2 }}>
+                OTP: <b>{receivedOtp}</b>
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <TextField
               label="Enter OTP"

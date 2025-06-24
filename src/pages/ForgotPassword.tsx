@@ -6,6 +6,7 @@ import { forgotPassword } from '../services/forgotPassword';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [otp, setOtp] = useState<number | null>(null);
   const navigate = useNavigate();
   const isMounted = useRef(true);
 
@@ -15,10 +16,12 @@ const ForgotPassword = () => {
 
   const handleSendOtp = async () => {
     setError('');
+    setOtp(null);
     try {
-      await forgotPassword(email);
+      const response = await forgotPassword(email);
       localStorage.setItem('resetEmail', email);
-      navigate('/otp', { state: { email } });
+      setOtp(response.otp); // Save OTP from API response
+      navigate('/otp', { state: { email, otp: response.otp } }); // Pass OTP to next page
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.');
     }
