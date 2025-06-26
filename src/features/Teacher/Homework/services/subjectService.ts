@@ -1,6 +1,5 @@
+import { API_URL } from '../../../../constants/config';
 import { SubjectOption } from '../components/AssignHomeworkForm';
-
-const API_URL = 'http://apinew.smartkidzwakad.com/api/v1/auth/subjects';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('token');
@@ -12,7 +11,7 @@ function getAuthHeaders() {
 
 // Fetch subjects for a division
 export const fetchSubjectsForClass = async (classId: number | string): Promise<SubjectOption[]> => {
-  const url = `${API_URL}?classId=${encodeURIComponent(classId)}`;
+  const url = `${API_URL}/api/v1/auth/subjects/?classId=${encodeURIComponent(classId)}`;
   const res = await fetch(url, {
     method: 'GET',
     headers: getAuthHeaders(),

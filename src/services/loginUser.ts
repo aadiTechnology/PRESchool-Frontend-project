@@ -1,5 +1,6 @@
+import { API_URL } from '../constants/config';
 export async function loginUser(userId: string, password: string) {
-  const response = await fetch('http://apinew.smartkidzwakad.com/api/v1/auth/login', {
+  const response = await fetch(`${API_URL}/api/v1/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

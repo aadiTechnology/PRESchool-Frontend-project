@@ -1,6 +1,5 @@
+import { API_URL } from '../../../../constants/config';
 import { HomeworkItem } from '../components/HomeworkTable';
-
-const API_URL = 'http://apinew.smartkidzwakad.com/api/v1/auth/homeworks';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('token');
@@ -11,7 +10,7 @@ function getAuthHeaders() {
 }
 
 export async function fetchHomeworkList(divisionId: number | string): Promise<HomeworkItem[]> {
-  const res = await fetch(`${API_URL}?divisionId=${divisionId}`, {
+  const res = await fetch(`${API_URL}/api/v1/auth/homeworks?divisionId=${divisionId}`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to fetch homework');
@@ -19,7 +18,7 @@ export async function fetchHomeworkList(divisionId: number | string): Promise<Ho
 }
 
 export async function deleteHomework(id: number): Promise<void> {
-  const res = await fetch(`${API_URL}/${id}`, {
+  const res = await fetch(`${API_URL}/api/v1/auth/homeworks/${id}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
   });
@@ -27,7 +26,7 @@ export async function deleteHomework(id: number): Promise<void> {
 }
 
 export async function fetchHomeworkById(id: string | number) {
-  const res = await fetch(`http://apinew.smartkidzwakad.com/api/v1/auth/homeworks/${id}`, {
+  const res = await fetch(`${API_URL}/api/v1/auth/homeworks/${id}`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to fetch homework');

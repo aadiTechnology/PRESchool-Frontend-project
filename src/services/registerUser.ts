@@ -1,3 +1,4 @@
+import { API_URL } from '../constants/config';
 export interface RegisterUserParams {
   firstName: string;
   lastName: string;
@@ -14,7 +15,7 @@ export interface RegisterUserParams {
 }
 
 export async function registerUser(params: RegisterUserParams): Promise<void> {
-  const response = await fetch('http://apinew.smartkidzwakad.com/api/v1/auth/register', {
+  const response = await fetch(`${API_URL}/api/v1/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(params),
