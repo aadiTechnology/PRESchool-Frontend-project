@@ -1,5 +1,6 @@
+import { API_URL } from '../constants/config';
 export async function forgotPassword(email: string) {
-  const response = await fetch('http://apinew.smartkidzwakad.com/api/v1/auth/forgot-password', {
+  const response = await fetch(`${API_URL}/api/v1/auth/forgot-password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),
