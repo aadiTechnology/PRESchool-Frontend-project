@@ -104,10 +104,12 @@ const HomeworkListPage: React.FC = () => {
     }
   };
 
+  
+  const today = new Date().toISOString().slice(0, 10);
   // Prepare initial values for edit
   const getInitialFormValues = (): AssignHomeworkFormValues => {
     if (!editHomework) {
-      return { subjectId: '', homeworkDate: '', instructions: '', attachments: [] };
+      return { subjectId: '', homeworkDate: today, instructions: '', attachments: [] };
     }
     // Map subjectName to subjectId
     const subject = subjects.find(s => s.name === editHomework.subjectName);
