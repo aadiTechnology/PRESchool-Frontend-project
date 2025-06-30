@@ -17,6 +17,7 @@ export interface HomeworkItem {
   homeworkDate: string;
   instructions: string;
   attachments: HomeworkAttachment[];
+  baseUrl: string;
 }
 
 interface HomeworkTableProps {
@@ -61,8 +62,14 @@ const HomeworkTable: React.FC<HomeworkTableProps> = ({ homework, onEdit, onDelet
             </TableCell>
             <TableCell>
               {hw.attachments.map((att, i) => (
-                <Link key={i} href={att.url} target="_blank" rel="noopener">
-                  {att ? att.toString().substring(11) : ''}
+                <Link
+                  key={i}
+                  href={hw.baseUrl + att}
+                  target="_blank"
+                  rel="noopener"
+                  onClick={e => e.stopPropagation()} // Prevent row click when clicking attachment
+                >
+                  {att && att ? att.toString().substring(11) : ''}
                 </Link>
               ))}
             </TableCell>
