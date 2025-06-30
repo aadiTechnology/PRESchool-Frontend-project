@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Link
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Link, Tooltip
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -50,10 +50,20 @@ const HomeworkTable: React.FC<HomeworkTableProps> = ({ homework, onEdit, onDelet
           >
             <TableCell>{hw.subjectName}</TableCell>
             <TableCell>{hw.homeworkDate}</TableCell>
-            <TableCell>{hw.instructions}</TableCell>
             <TableCell>
-              {hw.attachments.map((att,i) => (
-                <Link key={i} href={att.url} target="_blank" rel="noopener">{att}</Link>
+              <Tooltip title={hw.instructions} arrow>
+                <span>
+                  {hw.instructions.length > 20
+                    ? hw.instructions.slice(0, 20) + '...'
+                    : hw.instructions}
+                </span>
+              </Tooltip>
+            </TableCell>
+            <TableCell>
+              {hw.attachments.map((att, i) => (
+                <Link key={i} href={att.url} target="_blank" rel="noopener">
+                  {att ? att.toString().substring(11) : ''}
+                </Link>
               ))}
             </TableCell>
             {userRole === 2 && (
