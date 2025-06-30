@@ -59,8 +59,10 @@ const HomeworkViewPage: React.FC = () => {
           <Typography variant="h6" mt={2}>Attachments</Typography>
           {homework.attachments && homework.attachments.length > 0 ? (
             homework.attachments.map((att: any) => (
-              <Paper key={att.name} sx={{ p: 2, my: 1, display: 'flex', alignItems: 'center' }}>
-                <Link href={att.url} target="_blank" rel="noopener">{att.name}</Link>
+              <Paper key={att.name || att} sx={{ p: 2, my: 1, display: 'flex', alignItems: 'center' }}>
+                <Link href={homework.baseUrl + att} target="_blank" rel="noopener">
+                  {typeof att === 'string' ? att.substring(11) : att.name?.substring(11) || ''}
+                </Link>
               </Paper>
             ))
           ) : (

@@ -52,8 +52,8 @@ const HomeworkTable: React.FC<HomeworkTableProps> = ({ homework, onEdit, onDelet
             <TableCell>{hw.homeworkDate}</TableCell>
             <TableCell>{hw.instructions}</TableCell>
             <TableCell>
-              {hw.attachments.map(att => (
-                <Link key={att.name} href={att.url} target="_blank" rel="noopener">{att.name}</Link>
+              {hw.attachments.map((att,i) => (
+                <Link key={i} href={att.url} target="_blank" rel="noopener">{att}</Link>
               ))}
             </TableCell>
             {userRole === 2 && (
