@@ -163,7 +163,7 @@ const AssignHomeworkForm: React.FC<Props> = ({
             helperText={errors.instructions}
           />
         </Grid>
-        {/* <Grid item xs={12}>
+        <Grid item xs={12}>
           <Paper
             variant="outlined"
             sx={{ p: 3, borderStyle: 'dashed', textAlign: 'center' }}
@@ -199,7 +199,7 @@ const AssignHomeworkForm: React.FC<Props> = ({
               </Box>
             )}
           </Paper>
-        </Grid> */}
+        </Grid>
         <Grid item xs={12} sx={{ textAlign: 'right' }}>
           <Button
             type="button"

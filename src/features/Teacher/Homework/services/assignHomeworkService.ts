@@ -4,70 +4,47 @@ import { AssignHomeworkFormValues } from '../components/AssignHomeworkForm';
 const ADD_API_URL = `${API_URL}/api/v1/auth/assign-homework`;
 const EDIT_API_URL = `${API_URL}/api/v1/auth/homeworks`;
 
-function getAuthHeaders() {
+function getAuthHeaders(isFormData = false) {
   const token = localStorage.getItem('token');
-  return {
-    'Content-Type': 'application/json',
+  const headers: any = {
     Authorization: `Bearer ${token}`,
   };
+  // Do NOT set Content-Type for FormData, browser will set it automatically
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json';
+  }
+  return headers;
 }
 
 export const assignHomework = async (
   formData: AssignHomeworkFormValues & { divisionId: number | string; id?: number }
 ) => {
-  let attachments: any[] = [];
+  const isEdit = !!formData.id;
+  const fd = new FormData();
+  fd.append('divisionId', String(formData.divisionId));
+  fd.append('subjectId', String(formData.subjectId));
+  fd.append('homeworkDate', formData.homeworkDate);
+  fd.append('instructions', formData.instructions);
+
   if (formData.attachments && formData.attachments.length > 0) {
-    attachments = await Promise.all(
-      formData.attachments.map(async (file) => {
-        const buffer = await file.arrayBuffer();
-        return {
-          name: file.name,
-          type: file.type,
-          data: Array.from(new Uint8Array(buffer)),
-        };
-      })
-    );
-  }
-
-  // For update, use the required JSON body and endpoint
-  if (formData.id) {
-    const payload = {
-      id: formData.id,
-      divisionId: formData.divisionId,
-      subjectId: formData.subjectId,
-      homeworkDate: formData.homeworkDate,
-      instructions: formData.instructions,
-      attachments,
-    };
-    const res = await fetch(`${EDIT_API_URL}/${formData.id}`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      const error = await res.json().catch(() => ({}));
-      throw new Error(error?.message || 'Failed to update homework');
+    for (const file of formData.attachments) {
+      fd.append('attachments', file);
     }
-    return res.json();
   }
 
-  // For add
-  const payload = {
-    divisionId: formData.divisionId,
-    homeworkDate: formData.homeworkDate,
-    instructions: formData.instructions,
-    subjectId: formData.subjectId,
-    attachments,
-  };
-  const res = await fetch(ADD_API_URL, {
-    method: 'POST',
-    headers: getAuthHeaders(),
-    body: JSON.stringify(payload),
+  const url = isEdit
+    ? `${EDIT_API_URL}/${formData.id}`
+    : ADD_API_URL;
+
+  const res = await fetch(url, {
+    method: isEdit ? 'PUT' : 'POST',
+    headers: getAuthHeaders(true), // true = isFormData
+    body: fd,
   });
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));
-    throw new Error(error?.message || 'Failed to assign homework');
+    throw new Error(error?.message || (isEdit ? 'Failed to update homework' : 'Failed to assign homework'));
   }
   return res.json();
 };
