@@ -14,4 +14,6 @@ export const Screens = [
   { path: '/admin/users', label: 'User Management', roles: [Roles.ADMIN] },
   { path: '/teacher/homework', label: 'Homework', roles: [Roles.TEACHER] },
   { path: '/parent/homework', label: 'Homework', roles: [Roles.PARENT] },
+  { path: '/teacher/syllabus', label: 'Syllabus', roles: [Roles.TEACHER] },
+  { path: '/parent/syllabus', label: 'Syllabus', roles: [Roles.PARENT] },
 ];

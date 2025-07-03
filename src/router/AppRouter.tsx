@@ -20,6 +20,7 @@ import DashboardParent from '../features/dashboard/DashboardParent';
 import AssignHomeworkPage from '../features/Teacher/Homework/pages/AssignHomeworkPage';
 import HomeworkListPage from '../features/Teacher/Homework/pages/HomeworkListPage';
 import HomeworkViewPage from '../features/Teacher/Homework/pages/HomeworkViewPage';
+import SyllabusPage from '../features/Teacher/Syllabus/pages/SyllabusPage';
 
 const AppRouter: React.FC = () => {
   return (
@@ -103,6 +104,15 @@ const AppRouter: React.FC = () => {
         <Route
           path="/teacher/homework/:id"
           element={<AppLayout><HomeworkViewPage /></AppLayout>}
+        />
+
+        <Route
+          path="/teacher/syllabus"
+          element={<AppLayout><SyllabusPage /></AppLayout>}
+        />
+        <Route
+          path="/parent/syllabus"
+          element={<AppLayout><SyllabusPage /></AppLayout>}
         />
 
         <Route path="*" 
