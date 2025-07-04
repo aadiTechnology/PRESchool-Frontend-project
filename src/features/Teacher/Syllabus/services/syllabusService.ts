@@ -39,7 +39,14 @@ export async function addSyllabus(form: { divisionId: any; month: string; file: 
     headers: getAuthHeaders(true),
     body: fd,
   });
-  if (!res.ok) throw new Error('Failed to add syllabus');
+  if (!res.ok) {
+    let errorMsg = 'Failed to add syllabus';
+    try {
+      const data = await res.json();
+      errorMsg = data?.detail || data?.message || errorMsg;
+    } catch {}
+    throw new Error(errorMsg);
+  }
   return res.json();
 }
 

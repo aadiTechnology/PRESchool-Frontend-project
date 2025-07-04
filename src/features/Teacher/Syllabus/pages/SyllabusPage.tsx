@@ -10,6 +10,7 @@ const SyllabusPage: React.FC = () => {
   const [error, setError] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editSyllabus, setEditSyllabus] = useState<SyllabusItem | null>(null);
+  const [dialogError, setDialogError] = useState('');
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userRole = user.role; // 2 = teacher, 3 = parent
@@ -55,6 +56,7 @@ const SyllabusPage: React.FC = () => {
   const handleDialogClose = () => {
     setDialogOpen(false);
     setEditSyllabus(null);
+    setDialogError('');
   };
 
   const handleDialogSave = async (form: { month: string; file: File | null }) => {
@@ -66,9 +68,20 @@ const SyllabusPage: React.FC = () => {
       }
       setDialogOpen(false);
       setEditSyllabus(null);
+      setDialogError('');
       fetchList();
-    } catch {
-      setError('Failed to save syllabus');
+    } catch (err: any) {
+      let message = 'Failed to save syllabus';
+      // Try to extract error message from API response
+      if (err && err.response) {
+        try {
+          const data = await err.response.json();
+          message = data?.detail || data?.message || message;
+        } catch {}
+      } else if (err && err.message) {
+        message = err.message;
+      }
+      setDialogError(message);
     }
   };
 
@@ -100,6 +113,11 @@ const SyllabusPage: React.FC = () => {
       <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
         <DialogTitle>{editSyllabus ? 'Edit Syllabus' : 'Add Syllabus'}</DialogTitle>
         <DialogContent>
+          {dialogError && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {dialogError}
+            </Alert>
+          )}
           <SyllabusForm
             onSubmit={handleDialogSave}
             initialValues={
@@ -110,6 +128,7 @@ const SyllabusPage: React.FC = () => {
                   }
                 : undefined
             }
+            // usedMonths={editSyllabus ? [] : usedMonths}
             onCancel={handleDialogClose}
             isEdit={!!editSyllabus}
           />
