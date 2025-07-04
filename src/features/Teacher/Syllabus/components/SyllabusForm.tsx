@@ -24,6 +24,11 @@ const months = [
   { value: '12', label: 'December' },
 ];
 
+const getCurrentMonth = () => {
+  const now = new Date();
+  return String(now.getMonth() + 1).padStart(2, '0');
+};
+
 const SyllabusForm: React.FC<SyllabusFormProps> = ({
   onSubmit,
   loading,
@@ -32,7 +37,7 @@ const SyllabusForm: React.FC<SyllabusFormProps> = ({
   isEdit = false,
 }) => {
   const [form, setForm] = useState({
-    month: initialValues?.month || '',
+    month: initialValues?.month || getCurrentMonth(), // <-- default to current month
     file: null as File | null,
   });
   const [currentFileName, setCurrentFileName] = useState<string | undefined>(
@@ -42,7 +47,7 @@ const SyllabusForm: React.FC<SyllabusFormProps> = ({
 
   useEffect(() => {
     setForm({
-      month: initialValues?.month || '',
+      month: initialValues?.month || getCurrentMonth(), // <-- default to current month
       file: null,
     });
     setCurrentFileName((initialValues as any)?.file_name || undefined);
