@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Grid, TextField, MenuItem, Paper, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, MenuItem, Typography } from '@mui/material';
 
 interface SyllabusFormProps {
-  onSubmit: (data: { divisionId: number | string; month: string; file: File | null }) => void;
+  onSubmit: (data: { month: string; file: File | null }) => void;
   loading?: boolean;
-  initialValues?: { divisionId?: number | string; month?: string; file_name?: string };
-  divisionOptions: { id: number; name: string }[];
-  onCancel?: () => void; // <-- Add this
+  initialValues?: { month?: string; file_name?: string };
+  onCancel?: () => void;
+  isEdit?: boolean;
 }
 
 const months = [
@@ -28,38 +28,41 @@ const SyllabusForm: React.FC<SyllabusFormProps> = ({
   onSubmit,
   loading,
   initialValues,
-  divisionOptions,
-  onCancel, // <-- Add this
+  onCancel,
+  isEdit = false,
 }) => {
   const [form, setForm] = useState({
-    divisionId: initialValues?.divisionId || '',
     month: initialValues?.month || '',
     file: null as File | null,
   });
   const [currentFileName, setCurrentFileName] = useState<string | undefined>(
-    // Assume initialValues.file is a File or initialValues.fileName is a string
     (initialValues as any)?.file_name || undefined
   );
+  const [fileError, setFileError] = useState<string>('');
 
   useEffect(() => {
     setForm({
-      divisionId: initialValues?.divisionId || '',
       month: initialValues?.month || '',
       file: null,
     });
     setCurrentFileName((initialValues as any)?.file_name || undefined);
+    setFileError('');
   }, [initialValues]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
-    const { name, value } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name as string]: value,
-    }));
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files.length > 0 ? e.target.files[0] : null;
+    if (
+      file &&
+      !(
+        file.type === 'application/pdf' ||
+        file.type.startsWith('image/')
+      )
+    ) {
+      setFileError('Only PDF and image files are allowed.');
+      setForm(prev => ({ ...prev, file: null }));
+      return;
+    }
+    setFileError('');
     setForm(prev => ({
       ...prev,
       file,
@@ -67,10 +70,18 @@ const SyllabusForm: React.FC<SyllabusFormProps> = ({
     setCurrentFileName(file ? file.name : (initialValues as any)?.file_name || undefined);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.divisionId && form.month && (form.file || currentFileName)) {
-      onSubmit({ ...form, file: form.file });
+    if (form.month && (form.file || currentFileName)) {
+      onSubmit({ month: form.month, file: form.file });
     }
   };
 
@@ -80,27 +91,13 @@ const SyllabusForm: React.FC<SyllabusFormProps> = ({
         <Grid item xs={12}>
           <TextField
             select
-            name="divisionId"
-            label="Division"
-            value={form.divisionId}
-            onChange={handleChange}
-            fullWidth
-            required
-          >
-            {divisionOptions.map(opt => (
-              <MenuItem key={opt.id} value={opt.id}>{opt.name}</MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            select
             name="month"
             label="Month"
             value={form.month}
             onChange={handleChange}
             fullWidth
             required
+            disabled={isEdit}
           >
             {months.map(opt => (
               <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
@@ -110,11 +107,21 @@ const SyllabusForm: React.FC<SyllabusFormProps> = ({
         <Grid item xs={12}>
           <Button variant="outlined" component="label">
             Upload File
-            <input type="file" hidden onChange={handleFileChange} />
+            <input
+              type="file"
+              hidden
+              accept="application/pdf,image/*"
+              onChange={handleFileChange}
+            />
           </Button>
           {currentFileName && (
             <Typography variant="body2" sx={{ ml: 2, display: 'inline' }}>
               {currentFileName}
+            </Typography>
+          )}
+          {fileError && (
+            <Typography color="error" variant="caption" sx={{ ml: 2, display: 'block' }}>
+              {fileError}
             </Typography>
           )}
         </Grid>

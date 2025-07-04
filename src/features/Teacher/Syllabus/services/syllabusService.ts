@@ -28,7 +28,7 @@ export async function fetchSyllabus(divisionId: number | string): Promise<Syllab
   return res.json();
 }
 
-export async function addSyllabus(form: { divisionId: number | string; month: string; file: File }) {
+export async function addSyllabus(form: { divisionId: any; month: string; file: File }) {
   const fd = new FormData();
   fd.append('divisionId', String(form.divisionId));
   fd.append('month', form.month);

@@ -3,7 +3,6 @@ import { Box, Typography, CircularProgress, Alert, Button, Dialog, DialogTitle, 
 import SyllabusTable from '../components/SyllabusTable';
 import SyllabusForm from '../components/SyllabusForm';
 import { fetchSyllabus, addSyllabus, updateSyllabus, deleteSyllabus, SyllabusItem } from '../services/syllabusService';
-import { fetchDivisions, DivisionOption } from '../../../Admin/services/divisionService'
 
 const SyllabusPage: React.FC = () => {
   const [syllabus, setSyllabus] = useState<SyllabusItem[]>([]);
@@ -11,8 +10,6 @@ const SyllabusPage: React.FC = () => {
   const [error, setError] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editSyllabus, setEditSyllabus] = useState<SyllabusItem | null>(null);
-  const [divisionOptions, setDivisionOptions] = useState<DivisionOption[]>([]);
-  const [fetchingDivisions, setFetchingDivisions] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userRole = user.role; // 2 = teacher, 3 = parent
@@ -30,23 +27,8 @@ const SyllabusPage: React.FC = () => {
     }
   };
 
-  const fetchDivisionOptions = async () => {
-    setFetchingDivisions(true);
-    try {
-      if (user.classId) {
-        const divisions = await fetchDivisions(user.classId);
-        setDivisionOptions(divisions);
-      }
-    } catch {
-      setDivisionOptions([]);
-    } finally {
-      setFetchingDivisions(false);
-    }
-  };
-
   useEffect(() => {
     fetchList();
-    fetchDivisionOptions();
     // eslint-disable-next-line
   }, [divisionId, user.classId]);
 
@@ -75,12 +57,12 @@ const SyllabusPage: React.FC = () => {
     setEditSyllabus(null);
   };
 
-  const handleDialogSave = async (form: { divisionId: number | string; month: string; file: File | null }) => {
+  const handleDialogSave = async (form: { month: string; file: File | null }) => {
     try {
       if (editSyllabus && form.file) {
         await updateSyllabus(editSyllabus.id, form.file);
       } else if (!editSyllabus && form.file) {
-        await addSyllabus(form as any);
+        await addSyllabus({ divisionId, month: form.month, file: form.file });
       }
       setDialogOpen(false);
       setEditSyllabus(null);
@@ -120,10 +102,16 @@ const SyllabusPage: React.FC = () => {
         <DialogContent>
           <SyllabusForm
             onSubmit={handleDialogSave}
-            loading={fetchingDivisions}
-            initialValues={editSyllabus ? { divisionId: editSyllabus.divisionId, month: editSyllabus.month, file_name:editSyllabus.file_name } : undefined}
-            divisionOptions={divisionOptions}
+            initialValues={
+              editSyllabus
+                ? {
+                    month: editSyllabus.month,
+                    file_name: editSyllabus.file_name,
+                  }
+                : undefined
+            }
             onCancel={handleDialogClose}
+            isEdit={!!editSyllabus}
           />
         </DialogContent>
       </Dialog>
