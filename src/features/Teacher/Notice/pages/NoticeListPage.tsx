@@ -54,6 +54,7 @@ const NoticeListPage: React.FC = () => {
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const classId = user.classId || null;
+  const isParent = user.role === 3;
 
   const handleDialogSave = async (form: NoticeFormValues) => {
     try {
@@ -73,9 +74,11 @@ const NoticeListPage: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>Notices</Typography>
-      <Button variant="contained" color="primary" sx={{ mb: 2 }} onClick={handleAdd}>
-        Add Notice
-      </Button>
+      {!isParent && (
+        <Button variant="contained" color="primary" sx={{ mb: 2 }} onClick={handleAdd}>
+          Add Notice
+        </Button>
+      )}
       {loading ? (
         <CircularProgress />
       ) : error ? (
@@ -85,6 +88,7 @@ const NoticeListPage: React.FC = () => {
           notices={notices}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          isParent={isParent} // pass to table
         />
       )}
       <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>

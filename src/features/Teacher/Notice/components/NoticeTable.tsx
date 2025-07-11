@@ -7,13 +7,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { NoticeItem } from '../services/noticeService';
 import { useNavigate } from 'react-router-dom';
 
+// Add isParent prop
 interface NoticeTableProps {
   notices: NoticeItem[];
   onEdit: (notice: NoticeItem) => void;
   onDelete: (id: number) => void;
+  isParent?: boolean;
 }
 
-const NoticeTable: React.FC<NoticeTableProps> = ({ notices, onEdit, onDelete }) => {
+const NoticeTable: React.FC<NoticeTableProps> = ({ notices, onEdit, onDelete, isParent }) => {
   const navigate = useNavigate();
 
   return (
@@ -25,7 +27,7 @@ const NoticeTable: React.FC<NoticeTableProps> = ({ notices, onEdit, onDelete }) 
             <TableCell>Date</TableCell>
             <TableCell>Content</TableCell>
             <TableCell>Attachments</TableCell>
-            <TableCell>Actions</TableCell>
+            {!isParent && <TableCell>Actions</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,6 +39,7 @@ const NoticeTable: React.FC<NoticeTableProps> = ({ notices, onEdit, onDelete }) 
               onClick={e => {
                 // Prevent navigation if clicking on a link (attachment)
                 if ((e.target as HTMLElement).tagName !== 'A') {
+                  // Use correct route for parent/teacher if needed
                   navigate(`/teacher/notices/${notice.id}`);
                 }
               }}
@@ -62,19 +65,21 @@ const NoticeTable: React.FC<NoticeTableProps> = ({ notices, onEdit, onDelete }) 
                   '-'
                 )}
               </TableCell>
-              <TableCell>
-                <IconButton color="primary" onClick={e => { e.stopPropagation(); onEdit(notice); }}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton color="error" onClick={e => { e.stopPropagation(); onDelete(notice.id); }}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
+              {!isParent && (
+                <TableCell>
+                  <IconButton color="primary" onClick={e => { e.stopPropagation(); onEdit(notice); }}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton color="error" onClick={e => { e.stopPropagation(); onDelete(notice.id); }}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              )}
             </TableRow>
           ))}
           {notices.length === 0 && (
             <TableRow>
-              <TableCell colSpan={5} align="center">No notices found.</TableCell>
+              <TableCell colSpan={isParent ? 4 : 5} align="center">No notices found.</TableCell>
             </TableRow>
           )}
         </TableBody>
