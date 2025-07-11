@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Grid, TextField, MenuItem } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 
 export interface NoticeFormValues {
   title: string;
   content: string;
   date: string;
-  attachments: string[];
+  attachments: File[]; // Change to File[]
 }
 
 interface Props {
@@ -21,7 +21,7 @@ const NoticeForm: React.FC<Props> = ({ onSubmit, loading, initialValues, onCance
   );
 
   useEffect(() => {
-    if (initialValues) setForm(initialValues);
+    if (initialValues) setForm({ ...initialValues, attachments: [] });
   }, [initialValues]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,9 +31,17 @@ const NoticeForm: React.FC<Props> = ({ onSubmit, loading, initialValues, onCance
     }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    setForm(prev => ({
+      ...prev,
+      attachments: files ? Array.from(files) : [],
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(form); // form includes classId
+    onSubmit(form);
   };
 
   return (
@@ -73,8 +81,25 @@ const NoticeForm: React.FC<Props> = ({ onSubmit, loading, initialValues, onCance
             required
           />
         </Grid>
-        
-        {/* Add attachments field if needed */}
+        <Grid item xs={12}>
+          <Button variant="outlined" component="label">
+            Upload Attachments
+            <input
+              type="file"
+              hidden
+              multiple
+              accept="application/pdf,image/*"
+              onChange={handleFileChange}
+            />
+          </Button>
+          {form.attachments && form.attachments.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              {form.attachments.map((file, idx) => (
+                <div key={idx}>{file.name}</div>
+              ))}
+            </div>
+          )}
+        </Grid>
         <Grid item xs={12} sx={{ textAlign: 'right' }}>
           <Button type="button" variant="outlined" sx={{ mr: 2 }} onClick={onCancel} disabled={loading}>
             Cancel

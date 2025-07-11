@@ -22,6 +22,7 @@ import HomeworkListPage from '../features/Teacher/Homework/pages/HomeworkListPag
 import HomeworkViewPage from '../features/Teacher/Homework/pages/HomeworkViewPage';
 import SyllabusPage from '../features/Teacher/Syllabus/pages/SyllabusPage';
 import NoticeListPage from '../features/Teacher/Notice/pages/NoticeListPage';
+import NoticeViewPage from '../features/Teacher/Notice/pages/NoticeViewPage';
 
 const AppRouter: React.FC = () => {
   return (
@@ -123,6 +124,14 @@ const AppRouter: React.FC = () => {
         <Route
           path="/parent/notices"
           element={<AppLayout><NoticeListPage /></AppLayout>}
+        />
+        <Route
+          path="/teacher/notices/:id"
+          element={<AppLayout><NoticeViewPage /></AppLayout>}
+        />
+        <Route
+          path="/parent/notices/:id"
+          element={<AppLayout><NoticeViewPage /></AppLayout>}
         />
 
         <Route path="*" 
