@@ -21,8 +21,14 @@ function getAuthHeaders(isFormData = false) {
   return headers;
 }
 
-export async function fetchNotices(): Promise<NoticeItem[]> {
-  const res = await fetch(`${API_URL}/api/v1/auth/notices`, { headers: getAuthHeaders() });
+export async function fetchNotices(classId?: number, divisionId?: number): Promise<NoticeItem[]> {
+  const queryParams = new URLSearchParams();
+  if (classId) queryParams.append('classId', String(classId));
+  if (divisionId) queryParams.append('divisionId', String(divisionId));
+
+  const res = await fetch(`${API_URL}/api/v1/auth/notices?${queryParams.toString()}`, {
+    headers: getAuthHeaders(),
+  });
   if (!res.ok) throw new Error('Failed to fetch notices');
   return res.json();
 }
@@ -33,11 +39,12 @@ export async function fetchNoticeById(id: number): Promise<NoticeItem> {
   return res.json();
 }
 
-export async function addNotice(data: Omit<NoticeItem, 'id'> & { attachments?: File[] }) {
+export async function addNotice(data: Omit<NoticeItem, 'id'> & { divisionId: number; attachments?: File[] }) {
   const fd = new FormData();
   fd.append('title', data.title);
   fd.append('content', data.content);
   fd.append('classId', data.classId ? String(data.classId) : '');
+  fd.append('divisionId', String(data.divisionId)); // Pass divisionId from user object
   fd.append('date', data.date);
   if (data.attachments && data.attachments.length > 0) {
     for (const file of data.attachments) {
@@ -53,11 +60,12 @@ export async function addNotice(data: Omit<NoticeItem, 'id'> & { attachments?: F
   return res.json();
 }
 
-export async function updateNotice(id: number, data: Omit<NoticeItem, 'id'> ) {
+export async function updateNotice(id: number, data: Omit<NoticeItem, 'id'> & { divisionId: number; attachments?: File[] }) {
   const fd = new FormData();
   fd.append('title', data.title);
   fd.append('content', data.content);
   fd.append('classId', data.classId ? String(data.classId) : '');
+  fd.append('divisionId', String(data.divisionId)); // Pass divisionId from user object
   fd.append('date', data.date);
   if (data.attachments && data.attachments.length > 0) {
     for (const file of data.attachments) {

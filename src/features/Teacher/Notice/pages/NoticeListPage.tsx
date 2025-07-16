@@ -14,7 +14,9 @@ const NoticeListPage: React.FC = () => {
   const fetchList = async () => {
     setLoading(true);
     try {
-      const data = await fetchNotices();
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const divisionId = user.divisionId || null; // Get divisionId from user object
+      const data = await fetchNotices(user.classId, divisionId); // Pass divisionId
       setNotices(data);
     } catch {
       setError('Failed to fetch notices');
@@ -54,14 +56,15 @@ const NoticeListPage: React.FC = () => {
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const classId = user.classId || null;
+  const divisionId = user.divisionId || null;
   const isParent = user.role === 3;
 
   const handleDialogSave = async (form: NoticeFormValues) => {
     try {
       if (editNotice) {
-        await updateNotice(editNotice.id, { ...form, classId }); // always send user's classId
+        await updateNotice(editNotice.id, { ...form, classId, divisionId }); // always send user's classId and divisionId
       } else {
-        await addNotice({ ...form, classId }); // always send user's classId
+        await addNotice({ ...form, classId, divisionId }); // always send user's classId and divisionId
       }
       setDialogOpen(false);
       setEditNotice(null);

@@ -5,7 +5,8 @@ export interface NoticeFormValues {
   title: string;
   content: string;
   date: string;
-  attachments: File[]; // Change to File[]
+  classId: number | null;
+  attachments: File[]; // Remove divisionId
 }
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 
 const NoticeForm: React.FC<Props> = ({ onSubmit, loading, initialValues, onCancel }) => {
   const [form, setForm] = useState<NoticeFormValues>(
-    initialValues || { title: '', content: '', date: '', attachments: [] }
+    initialValues || { title: '', content: '', date: '', classId: null, attachments: [] }
   );
 
   useEffect(() => {
@@ -41,7 +42,9 @@ const NoticeForm: React.FC<Props> = ({ onSubmit, loading, initialValues, onCance
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(form);
+    const user = JSON.parse(localStorage.getItem('user') || '{}'); // Get divisionId from user object
+    const divisionId = user.divisionId || null;
+    onSubmit({ ...form }); // Pass divisionId from user object
   };
 
   return (
