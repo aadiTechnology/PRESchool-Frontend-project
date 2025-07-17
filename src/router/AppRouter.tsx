@@ -23,6 +23,8 @@ import HomeworkViewPage from '../features/Teacher/Homework/pages/HomeworkViewPag
 import SyllabusPage from '../features/Teacher/Syllabus/pages/SyllabusPage';
 import NoticeListPage from '../features/Teacher/Notice/pages/NoticeListPage';
 import NoticeViewPage from '../features/Teacher/Notice/pages/NoticeViewPage';
+import AttendanceSummaryPage from '../features/Teacher/Attendance/pages/AttendanceSummaryPage';
+import MarkAttendancePage from '../features/Teacher/Attendance/pages/MarkAttendancePage';
 
 const AppRouter: React.FC = () => {
   return (
@@ -132,6 +134,15 @@ const AppRouter: React.FC = () => {
         <Route
           path="/parent/notices/:id"
           element={<AppLayout><NoticeViewPage /></AppLayout>}
+        />
+
+        <Route
+          path="/teacher/attendance/summary"
+          element={<AppLayout><AttendanceSummaryPage /></AppLayout>}
+        />
+        <Route
+          path="/teacher/attendance/mark"
+          element={<AppLayout><MarkAttendancePage /></AppLayout>}
         />
 
         <Route path="*" 
