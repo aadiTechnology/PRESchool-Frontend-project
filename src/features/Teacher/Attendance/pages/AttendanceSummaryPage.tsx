@@ -5,7 +5,8 @@ import { fetchAttendance } from '../services/attendanceService';
 import { AttendanceSummary } from '../types/attendanceTypes';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const divisionId = 1001; // Replace with actual divisionId from context/user
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+const divisionId = user.divisionId || ''; // fallback to empty string if not found
 
 const AttendanceSummaryPage: React.FC = () => {
   const [searchParams] = useSearchParams();
