@@ -12,9 +12,9 @@ interface Props {
 
 const MarkAttendanceTable: React.FC<Props> = ({ students, attendance, onChange, selectAll, onSelectAll }) => (
   <Box>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead >
+    <TableContainer component={Paper} sx={{ maxHeight: 400, overflowY: 'auto' }}>
+      <Table stickyHeader>
+        <TableHead>
           <TableRow>
             <TableCell>Student Name</TableCell>
             <TableCell align="center">

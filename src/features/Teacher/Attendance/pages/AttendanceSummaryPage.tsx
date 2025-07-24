@@ -46,13 +46,16 @@ const AttendanceSummaryPage: React.FC = () => {
               value={date}
               onChange={e => setDate(e.target.value)}
               fullWidth
+              size="small"
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={3} sx={{ textAlign: 'right' }}>
+          <Grid item xs={12} sm={4} >
             <Button
-              variant="contained"
-              color="primary"
+             variant="contained"
+             color="primary"
+             fullWidth
+             sx={{ height: '40px' }}
               onClick={() => navigate(`/teacher/attendance/mark?date=${date}`)}
             >
               Mark Attendance

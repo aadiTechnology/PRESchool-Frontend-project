@@ -102,8 +102,7 @@ const MarkAttendancePage: React.FC = () => {
       }));
       await markAttendance(divisionId, date, cleanAttendance);
       setSnackbar({ open: true, message: 'Attendance saved successfully.', severity: 'success' });
-      // Redirect to summary view for the same date
-      navigate(`/teacher/attendance/summary?date=${date}`);
+      // navigate(`/teacher/attendance/summary?date=${date}`);
     } catch {
       setSnackbar({ open: true, message: 'Failed to save attendance. Please try again.', severity: 'error' });
     } finally {
@@ -133,20 +132,43 @@ const MarkAttendancePage: React.FC = () => {
                 Note: Select present/absent for each student and save attendance for the selected date.
             </Typography>
         </Box>
-        <Grid container spacing={2} alignItems="center" mb={4}>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              label="Select Date"
-              type="date"
-              value={date}
-              onChange={e => setDate(e.target.value)}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ max: new Date().toISOString().slice(0, 10) }}
-              size="small"
-            />
-          </Grid>
+      <Grid container spacing={2} mb={4} alignItems="center">
+        <Grid item xs={12} sm={4}>
+          <TextField
+            label="Select Date"
+            type="date"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ max: new Date().toISOString().slice(0, 10) }}
+            size="small"
+         />
         </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ height: '40px' }}
+            onClick={() => navigate(`/teacher/attendance/summary?date=${date}`)}
+          >
+           Attendance Summary
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+         <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ height: '40px' }}
+          onClick={handleSave}
+          disabled={saving || loading}
+         >
+         Save Attendance
+         </Button>
+        </Grid>
+      </Grid>
         <Grid container spacing={0.5} mb={2}>
           <SummaryCards items={items} />
         </Grid>
@@ -165,16 +187,6 @@ const MarkAttendancePage: React.FC = () => {
             onSelectAll={handleSelectAll}
           />
         )}
-        <Box mt={2} textAlign="right">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSave}
-            disabled={saving || loading}
-          >
-            Save Attendance
-          </Button>
-        </Box>
         <Snackbar
           open={snackbar.open}
           autoHideDuration={3000}

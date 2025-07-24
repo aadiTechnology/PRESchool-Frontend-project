@@ -2,6 +2,8 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Box } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { AttendanceSummary } from '../types/attendanceTypes';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 interface Props {
   records: AttendanceSummary[];
@@ -10,8 +12,8 @@ interface Props {
 
 const AttendanceSummaryTable: React.FC<Props> = ({ records, loading }) => (
   <Box>
-    <TableContainer component={Paper}>
-      <Table>
+     <TableContainer component={Paper} sx={{ maxHeight: 400, overflowY: 'auto' }}>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>Student Name</TableCell>
@@ -38,10 +40,12 @@ const AttendanceSummaryTable: React.FC<Props> = ({ records, loading }) => (
                       <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} /> Present
                     </Box>
                   ) : (
-                    <Typography color="error">Absent</Typography>
+                    <Box display="flex" alignItems="center" color="error.main">
+                      <CancelIcon fontSize="small" sx={{ mr: 1 }} /> Absent
+                    </Box>
                   )}
                 </TableCell>
-                <TableCell>{(rec.status === 'present' || rec.status === 'p' || rec.status === 'true' || rec.status === '1') ? rec.scanTime : '-'}</TableCell>
+                <TableCell>{rec.scanTime || '-'}</TableCell>
               </TableRow>
             ))
           )}
