@@ -20,7 +20,6 @@ const AttendanceSummaryPage: React.FC = () => {
     setLoading(true);
     fetchAttendance(divisionId, date)
       .then(data => {
-        // Normalize status to "present"/"absent"
         const normalized = data.map((rec: AttendanceSummary) => ({
           ...rec,
           status: typeof rec.status === 'string'
@@ -29,9 +28,40 @@ const AttendanceSummaryPage: React.FC = () => {
               ? 'present'
               : 'absent'
         }));
-        setRecords(normalized);
+
+        // Check if all students are absent
+        const allAbsent = normalized.length > 0 && normalized.every(
+          rec =>
+            rec.status === 'absent' ||
+            rec.status === 'a' ||
+            rec.status === 'false' ||
+            rec.status === '0'
+        );
+
+        if (allAbsent) {
+          setRecords([]);
+          setError('No Attendance Found for the selected date.');
+        } else {
+          setRecords(normalized);
+          setError('');
+        }
       })
-      .catch(() => setError('Unable to load attendance. Please check your connection.'))
+      .catch(async (err) => {
+        let message = 'Unable to load attendance. Please check your connection.';
+        if (err && err.status === 404 && err.response) {
+          try {
+            const data = await err.response.json();
+            if (
+              data?.detail === 'No Attendance Found For This Date.' ||
+              data?.message === 'No Attendance Found For This Date'
+            ) {
+              message = 'No Attendance Found for the selected date.';
+            }
+          } catch {}
+        }
+        setRecords([]);
+        setError(message);
+      })
       .finally(() => setLoading(false));
   }, [date]);
 
