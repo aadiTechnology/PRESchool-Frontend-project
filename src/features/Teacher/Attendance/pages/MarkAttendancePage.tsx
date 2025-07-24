@@ -102,7 +102,9 @@ const MarkAttendancePage: React.FC = () => {
       }));
       await markAttendance(divisionId, date, cleanAttendance);
       setSnackbar({ open: true, message: 'Attendance saved successfully.', severity: 'success' });
-      // navigate(`/teacher/attendance/summary?date=${date}`);
+      setTimeout(() => {
+        navigate(`/teacher/attendance/summary?date=${date}`);
+      }, 1200); // Wait for popup before navigating
     } catch {
       setSnackbar({ open: true, message: 'Failed to save attendance. Please try again.', severity: 'error' });
     } finally {
