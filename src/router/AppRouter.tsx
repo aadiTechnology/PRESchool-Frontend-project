@@ -25,6 +25,7 @@ import NoticeListPage from '../features/Teacher/Notice/pages/NoticeListPage';
 import NoticeViewPage from '../features/Teacher/Notice/pages/NoticeViewPage';
 import AttendanceSummaryPage from '../features/Teacher/Attendance/pages/AttendanceSummaryPage';
 import MarkAttendancePage from '../features/Teacher/Attendance/pages/MarkAttendancePage';
+import MyChildAttendancePage from '../features/Parent/pages/MyChildAttendancePage';
 
 const AppRouter: React.FC = () => {
   return (
@@ -143,6 +144,11 @@ const AppRouter: React.FC = () => {
         <Route
           path="/teacher/attendance/mark"
           element={<AppLayout><MarkAttendancePage /></AppLayout>}
+        />
+
+        <Route
+          path="/parent/attendance"
+          element={<AppLayout><MyChildAttendancePage /></AppLayout>}
         />
 
         <Route path="*" 
