@@ -3,6 +3,16 @@ import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import authService from '../services/authService';
 
+export type UserType = {
+  id: number;
+  name: string;
+  email: string;
+  classId?: number;
+  divisionId?: number;
+  className?: string;
+  // Add other user properties as needed
+};
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -10,11 +20,13 @@ export const useAuth = () => {
   }
   const { setUser, setIsAuthenticated } = context;
   const [loading, setLoading] = useState(true);
+  const [user, setUserState] = useState<UserType | null>(null);
 
   const login = async (email: string, password: string) => {
     try {
       const response = await authService.login(email, password);
       setUser(response.user);
+      setUserState(response.user); // <-- Update user state on login
       setIsAuthenticated(true);
       localStorage.setItem('token', response.access_token);
       localStorage.setItem('user', JSON.stringify(response.user));
@@ -63,6 +75,7 @@ export const useAuth = () => {
 
   const logout = () => {
     setUser(null);
+    setUserState(null); // <-- Clear user state on logout
     setIsAuthenticated(false);
     localStorage.removeItem('token');
   };
@@ -74,12 +87,13 @@ export const useAuth = () => {
       setIsAuthenticated(true);
       if (storedUser) {
         setUser(JSON.parse(storedUser));
+        setUserState(JSON.parse(storedUser)); // <-- Initialize user state from localStorage
       }
     }
     setLoading(false);
   }, [setIsAuthenticated, setUser]);
 
-  return { login, register, logout, loading };
+  return { login, register, logout, loading, user };
 };
 
 export default useAuth;
