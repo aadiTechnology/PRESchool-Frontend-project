@@ -69,6 +69,16 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
     }
   };
 
+  // Helper to check if selected date is in the future
+  const isFutureDate = (() => {
+    const selected = new Date(selectedDate);
+    const today = new Date();
+    // Remove time part for comparison
+    selected.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+    return selected > today;
+  })();
+
   return (
     <Paper sx={{ p: 2 }}>
       <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
@@ -118,6 +128,14 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
           })}
         </Grid>
       </Grid>
+      {/* Message for future dates only */}
+      {isFutureDate && (
+        <Box mt={2}>
+          <Typography color="error" variant="body2" fontWeight={500}>
+            Future Date attendance is not allowed.
+          </Typography>
+        </Box>
+      )}
       <Box mt={2} display="flex" gap={2}>
         <Box display="flex" alignItems="center" gap={1}>
           <Box sx={{ width: 16, height: 16, bgcolor: "#58ee60ff", borderRadius: "50%" }} />

@@ -1,3 +1,4 @@
+import { API_URL } from '../../../../constants/config';
 const API_BASE = "http://localhost:8000";
 
 export const fetchAttendanceCalendar = async (
@@ -9,7 +10,7 @@ export const fetchAttendanceCalendar = async (
   token: string
 ) => {
   const res = await fetch(
-    `${API_BASE}/api/v1/auth/my-child/attendance/calendar?userId=${userId}&classId=${classId}&divisionId=${divisionId}&month=${month}&year=${year}`,
+    `${API_URL}/api/v1/auth/my-child/attendance/calendar?userId=${userId}&classId=${classId}&divisionId=${divisionId}&month=${month}&year=${year}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -30,7 +31,7 @@ export const fetchDailyAttendance = async (
   token: string
 ) => {
   const res = await fetch(
-    `${API_BASE}/api/v1/auth/my-child/attendance/daily?userId=${userId}&classId=${classId}&divisionId=${divisionId}&date=${date}`,
+    `${API_URL}/api/v1/auth/my-child/attendance/daily?userId=${userId}&classId=${classId}&divisionId=${divisionId}&date=${date}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
