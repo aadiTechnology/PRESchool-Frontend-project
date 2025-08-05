@@ -3,25 +3,23 @@ import {
   AppBar,
   Box,
   Toolbar,
-  Typography,
   IconButton,
   Drawer,
   useMediaQuery,
   useTheme,
-  MenuItem,
+  Typography,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SidebarMenu from './SidebarMenu';
-import ProfileMenu from './ProfileMenu'; // ProfileMenu component
-import { Link } from 'react-router-dom';
+import ProfileMenu from './ProfileMenu';
 
 const schoolName = 'Smartkidz Wakad';
-const logoUrl = '/images/smartkidz_logo.png'; // Corrected and simplified
+const logoUrl = '/images/smartkidz_logo.png';
 
 const Header1: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // sm = 600px
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
@@ -108,8 +106,7 @@ const Header1: React.FC = () => {
           },
         }}
       >
-        <SidebarMenu/>
-        
+        <SidebarMenu onMenuClick={handleDrawerClose} /> {/* Pass the handler */}
       </Drawer>
     </>
   );
