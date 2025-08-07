@@ -24,6 +24,7 @@ const MyChildAttendancePage: React.FC = () => {
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [childName, setChildName] = useState<string>("");
+  const [selectedDateStatus, setSelectedDateStatus] = useState<string>("");
 
   // Fetch calendar data
   useEffect(() => {
@@ -42,6 +43,16 @@ const MyChildAttendancePage: React.FC = () => {
       })
       .finally(() => setLoading(false));
   }, [USER_ID, CLASS_ID, DIVISION_ID, month, year]);
+
+  useEffect(() => {
+    // Update selectedDateStatus whenever selectedDate or calendarData changes
+    if (!calendarData) {
+      setSelectedDateStatus("");
+      return;
+    }
+    const entry = calendarData.find((d: any) => d.date === selectedDate);
+    setSelectedDateStatus(entry?.status || "not-marked");
+  }, [selectedDate, calendarData]);
 
   const handleMonthChange = (newMonth: number, newYear: number) => {
     setMonth(newMonth);
@@ -94,6 +105,7 @@ const MyChildAttendancePage: React.FC = () => {
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               loading={loading}
+              selectedDateStatus={selectedDateStatus} // pass status
             />
           </Box>
         </Grid>

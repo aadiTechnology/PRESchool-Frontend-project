@@ -14,6 +14,7 @@ interface AttendanceCalendarProps {
   selectedDate: string;
   setSelectedDate: (date: string) => void;
   loading: boolean;
+  selectedDateStatus?: string; // add prop
 }
 
 const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
@@ -24,6 +25,7 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   selectedDate,
   setSelectedDate,
   loading,
+  selectedDateStatus = "",
 }) => {
   // Calculate first day of month and days in month
   const firstDay = new Date(year, month - 1, 1).getDay();
@@ -73,10 +75,20 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
   const isFutureDate = (() => {
     const selected = new Date(selectedDate);
     const today = new Date();
-    // Remove time part for comparison
     selected.setHours(0,0,0,0);
     today.setHours(0,0,0,0);
     return selected > today;
+  })();
+
+  // Show "Attendance is not Marked" for past/today dates with status "not-marked"
+  const showNotMarkedMsg =
+    !isFutureDate &&
+    selectedDateStatus?.toLowerCase().replace(/\s/g, "") === "notmarked";
+
+  // Helper to check if selected date is in current month
+  const isCurrentMonth = (() => {
+    const selected = new Date(selectedDate);
+    return selected.getMonth() + 1 === month && selected.getFullYear() === year;
   })();
 
   return (
@@ -133,6 +145,14 @@ const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({
         <Box mt={2}>
           <Typography color="error" variant="body2" fontWeight={500}>
             Future Date attendance is not allowed.
+          </Typography>
+        </Box>
+      )}
+      {/* Message for not marked past/today dates */}
+      {showNotMarkedMsg && (
+        <Box mt={2}>
+          <Typography color="error" variant="body2" fontWeight={500}>
+            Attendance is not Marked.
           </Typography>
         </Box>
       )}
