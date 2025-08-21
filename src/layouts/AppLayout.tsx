@@ -22,19 +22,18 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </Box>
 
         {/* Main content area with responsive Container and Grid */}
-        <Container maxWidth="lg" sx={{ flexGrow: 1, py: 2 }}>
           <Grid
             container
             justifyContent="center"
             alignItems="flex-start"
             overflow={'auto'}
+            p={2}
             sx={{ minHeight: '60vh' }}
-          >
+          > 
             <Grid item xs={12}>
               {children}
             </Grid>
           </Grid>
-        </Container>
 
         {/* Footer */}
         <Box sx={{ flexShrink: 0, mt: 'auto', bgcolor: '#f5f5f5' }}>
