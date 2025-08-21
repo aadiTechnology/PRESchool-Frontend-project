@@ -166,7 +166,7 @@ const UserManagementPage: React.FC = () => {
     .filter(user => (divisionFilter ? user.divisionId === divisionFilter : true));
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <div>
       <Grid container justifyContent="space-between" alignItems="center" mb={2}>
         <Grid item xs={12} sm={6}>
           <Typography
@@ -264,7 +264,7 @@ const UserManagementPage: React.FC = () => {
       <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={() => setSnackbar({...snackbar, open: false})}>
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
-    </Container>
+    </div>
   );
 };
 
