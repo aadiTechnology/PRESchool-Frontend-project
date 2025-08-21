@@ -56,6 +56,17 @@ const Header1: React.FC = () => {
             >
               <MenuIcon />
             </IconButton>
+            <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              minWidth: 100,
+              backgroundColor: '#ffffff', // White background for the logo
+              borderRadius: 1, // Optional: Add rounded corners
+              padding: 0.5, // Optional: Add some padding around the logo
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Optional: Add a subtle shadow
+            }}
+          >
             <img
               src={logoUrl}
               alt="School Logo"
@@ -63,7 +74,7 @@ const Header1: React.FC = () => {
                 height: isMobile ? 30 : 40,
                 maxWidth: '100%',
               }}
-            />
+            /></Box>
           </Box>
 
           {/* CENTER: School Name */}
