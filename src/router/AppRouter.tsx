@@ -26,6 +26,7 @@ import NoticeViewPage from '../features/Teacher/Notice/pages/NoticeViewPage';
 import AttendanceSummaryPage from '../features/Teacher/Attendance/pages/AttendanceSummaryPage';
 import MarkAttendancePage from '../features/Teacher/Attendance/pages/MarkAttendancePage';
 import MyChildAttendancePage from '../features/Parent/pages/MyChildAttendancePage';
+import AttendanceScanner from '../features/Admin/Attendance/pages/AttendanceScanner';
 
 const AppRouter: React.FC = () => {
   return (
@@ -68,7 +69,7 @@ const AppRouter: React.FC = () => {
         
         <Route
           path="/admin/dashboardAdmin"
-          element={<AppLayout>< DashboardAdmin/></AppLayout>}
+          element={<AppLayout><AttendanceScanner /></AppLayout>}
         />
 
         <Route
@@ -149,6 +150,11 @@ const AppRouter: React.FC = () => {
         <Route
           path="/parent/attendance"
           element={<AppLayout><MyChildAttendancePage /></AppLayout>}
+        />
+
+        <Route
+          path="/admin/attendance/scanner"
+          element={<AppLayout><DashboardAdmin /></AppLayout>}
         />
 
         <Route path="*" 
