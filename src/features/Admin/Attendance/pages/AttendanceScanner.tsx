@@ -41,9 +41,11 @@ const AttendanceScanner: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then((mediaDevices) => {
-      setDevices(mediaDevices.filter(device => device.kind === 'videoinput'));
-    });
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices().then((mediaDevices) => {
+        setDevices(mediaDevices.filter(device => device.kind === 'videoinput'));
+      });
+    }
   }, []);
 
   // Always fetch stats for today, no preschoolId needed
