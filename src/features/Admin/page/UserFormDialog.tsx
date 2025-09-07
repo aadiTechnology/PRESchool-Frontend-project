@@ -192,7 +192,7 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ open, onClose, onSave, 
     }
 
     if (form.role === 3) {
-      if (!form.childName) errors.childName = 'Child Name is required';
+      if (!form.fatherName) errors.fatherName = 'Child Name is required';
       if (!form.childAge) errors.childAge = 'Child Age is required';
     }
 
@@ -301,8 +301,8 @@ const UserFormDialog: React.FC<UserFormDialogProps> = ({ open, onClose, onSave, 
           {form.role === 3 && (
             <>
               <Grid item xs={12} sm={4}>
-                <TextField label="Child Name" name="childName" value={form.childName || ''} onChange={handleChange} fullWidth required 
-                onBlur={handleBlur} error={!!validationErrors.childName} helperText={validationErrors.childName}/>
+                <TextField label="father Name" name="fatherName" value={form.fatherName || ''} onChange={handleChange} fullWidth required 
+                onBlur={handleBlur} error={!!validationErrors.fatherName} helperText={validationErrors.fatherName}/>
                 
               </Grid>
               <Grid item xs={12} sm={4}>

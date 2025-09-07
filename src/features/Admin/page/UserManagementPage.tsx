@@ -135,7 +135,7 @@ const UserManagementPage: React.FC = () => {
       { key: 'className', label: 'Class' },
       { key: 'divisionName', label: 'Division' },
       { key: 'qualification', label: 'Qualification' },
-      { key: 'childName', label: 'Child Name' },
+      { key: 'fatherName', label: 'father Name' },
       { key: 'childAge', label: 'Child Age' },
     ];
     const roleLabels: Record<number, string> = {
@@ -150,7 +150,7 @@ const UserManagementPage: React.FC = () => {
       Class: user.className || '-',
       Division: user.divisionName || '-',
       Qualification: user.role === 2 ? user.qualification || '-' : '-',
-      'Child Name': user.role === 3 ? user.childName || '-' : '-',
+      'father Name': user.role === 3 ? user.fatherName || '-' : '-',
       'Child Age': user.role === 3 ? user.childAge || '-' : '-',
     }));
     const worksheet = XLSX.utils.json_to_sheet(data);

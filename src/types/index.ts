@@ -9,7 +9,7 @@ export interface User {
   role: number;
   preschoolId?: number;
   qualification?: string;
-  childName?: string;
+  fatherName?: string;
   childAge?: string;
   classId?: number;      // <-- Add this
   divisionId?: number;   // <-- Add this
@@ -28,7 +28,7 @@ export interface RegisterUser {
   preschoolId: number;
   classId: number;
   divisionId: number;
-  childName: string;
+  fatherName: string;
   childAge: number;
 }
 

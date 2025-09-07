@@ -158,14 +158,14 @@ const AttendanceScanner: React.FC = () => {
       const roleNum = typeof userData.role === 'string' ? parseInt(userData.role) : userData.role;
       if (roleNum === 2 && userData.firstName && userData.lastName) {
         name = `${userData.firstName} ${userData.lastName}`;
-      } else if (roleNum === 3 && userData.childName && userData.lastName) {
-        name = `${userData.childName} ${userData.lastName}`;
+      } else if (roleNum === 3 && userData.firstName && userData.lastName) {
+        name = `${userData.firstName} ${userData.lastName}`;
       } else if (userData.fullName) {
         name = userData.fullName;
       } else if (userData.firstName && userData.lastName) {
         name = `${userData.firstName} ${userData.lastName}`;
-      } else if (userData.childName) {
-        name = userData.childName;
+      } else if (userData.firstName) {
+        name = userData.firstName;
       }
 
       setSaveSuccessMsg(

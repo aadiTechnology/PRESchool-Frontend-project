@@ -10,7 +10,7 @@ export interface RegisterUserParams {
   preschoolId: number;
   classId: number;
   divisionId: number;
-  childName: string;
+  fatherName: string;
   childAge: number;
 }
 

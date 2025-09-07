@@ -6,7 +6,7 @@ export interface AttendanceUser {
   fullName?: string;
   firstName?: string;
   lastName?: string;
-  childName?: string;
+  fatherName?: string;
   role?: number | string;
   className?: string | null;
   divisionName?: string | null;

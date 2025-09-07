@@ -16,7 +16,7 @@ const getValidationSchema = () => yup.object().shape({
   confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords do not match').required('Confirm Password is required'),
   classId: yup.string().required('Class is required'),
   divisionId: yup.string().required('Division is required'),
-  childName: yup.string().required('Child Name is required'),
+  fatherName: yup.string().required('father Name is required'),
   childAge: yup.number().required('Child Age is required'),
 });
 
@@ -30,7 +30,7 @@ export default function Register() {
     confirmPassword: '',
     classId: '',
     divisionId: '',
-    childName: '',
+    fatherName: '',
     childAge: '',
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -127,9 +127,9 @@ export default function Register() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              fullWidth label="Child Name" name="childName"
-              value={formData.childName} onChange={handleChange}
-              error={!!errors.childName} helperText={errors.childName}
+              fullWidth label="Child Name" name="fatherName"
+              value={formData.fatherName} onChange={handleChange}
+              error={!!errors.fatherName} helperText={errors.fatherName}
             />
           </Grid>
           <Grid item xs={12} sm={6}>

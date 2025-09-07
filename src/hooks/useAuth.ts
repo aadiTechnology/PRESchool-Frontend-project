@@ -48,7 +48,7 @@ export const useAuth = () => {
     divisionId: number;
     preschoolId: number;
     role: number;
-    childName: string;
+    fatherName: string;
     childAge: number;
   }) => {
     try {
@@ -63,7 +63,7 @@ export const useAuth = () => {
         divisionId: userData.divisionId,
         preschoolId: userData.preschoolId,
         role: userData.role,
-        childName: userData.childName,
+        fatherName: userData.fatherName,
         childAge: userData.childAge,
       };
       await authService.register(registerParams);
