@@ -21,6 +21,7 @@ import {
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { QrReader } from 'react-qr-reader';
+import type { Result } from '@zxing/library';
 
 const AttendanceScanner: React.FC = () => {
   const [scanning, setScanning] = useState(false);
@@ -346,19 +347,19 @@ const AttendanceScanner: React.FC = () => {
                     ? { deviceId: { exact: deviceId } }
                     : { facingMode: 'environment' }
                 }
-                onResult={(result, error) => {
+                onResult={(
+                  result: Result | null | undefined,
+                  error: Error | null | undefined
+                ) => {
                   if (!!result) {
                     const scannedCode = result.getText();
                     setQrCode(scannedCode);
                     setShowScanner(false);
                     setTimeout(() => {
-                      handleScan(scannedCode); // Pass the scanned value directly
+                      handleScan(scannedCode);
                     }, 100);
                   }
-                  if (!!error) {
-                    // Optionally handle error
-                    // setErrorMsg('Camera error: ' + error.message);
-                  }
+                  // Optionally handle error
                 }}
               />
             </Box>
