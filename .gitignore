@@ -1,2 +1,43 @@
+# Node modules
 node_modules/
+
+# Build output
 build/
+dist/
+
+# Capacitor/Ionic platform folders
+android/
+ios/
+web/
+electron/
+
+# Capacitor generated files
+capacitor.config.json
+capacitor.config.ts
+capacitor.settings.json
+capacitor.settings.gradle
+local.properties
+
+# IDE/project files
+.idea/
+.vscode/
+*.iml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Misc
+*.log
