@@ -1,52 +1,42 @@
 import React from 'react';
-import { Box, CssBaseline } from '@mui/material';
+import { Box, CssBaseline, Grid, Container } from '@mui/material';
 import Header from '../components/ProfileMenu';
 import Footer from '../components/Footer';
 import Header1 from '../components/Header1';
-
-const HEADER_HEIGHT = 54; // adjust if your header is taller
-//const FOOTER_HEIGHT = 80; // adjust if your footer is taller
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <CssBaseline />
-
       <Box
         sx={{
-          height: '100vh',
-          overflow: 'hidden', // 🔒 Prevent global scrolling
+          minHeight: '100vh',
           bgcolor: '#fafbfc',
           display: 'flex',
           flexDirection: 'column',
         }}
       >
-        <Box>
-         <Header1/>
-        </Box>
         {/* Header */}
-        {/* <Box sx={{ height: HEADER_HEIGHT, flexShrink: 0 }}>
-          <Header />
-        </Box> */}
-
-        {/* Main content area */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            overflow: 'hidden', // No internal scroll
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            px: 3,
-            py: 2,
-          }}
-        >
-          {children}
+        <Box>
+          <Header1 />
         </Box>
+
+        {/* Main content area with responsive Container and Grid */}
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="flex-start"
+            overflow={'auto'}
+            p={2}
+            sx={{ minHeight: '60vh' }}
+          > 
+            <Grid item xs={12}>
+              {children}
+            </Grid>
+          </Grid>
 
         {/* Footer */}
         <Box sx={{ flexShrink: 0, mt: 'auto', bgcolor: '#f5f5f5' }}>
-          {/* <Footer /> */}
           <Footer />
         </Box>
       </Box>

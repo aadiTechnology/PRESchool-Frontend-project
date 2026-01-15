@@ -3,23 +3,23 @@ import {
   AppBar,
   Box,
   Toolbar,
-  Typography,
   IconButton,
   Drawer,
   useMediaQuery,
   useTheme,
+  Typography,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SidebarMenu from './SidebarMenu';
-import ProfileMenu from './ProfileMenu'; // ProfileMenu component
+import ProfileMenu from './ProfileMenu';
 
-const schoolName = 'Greenfield International School';
-const logoUrl = '/images/happy_kids1.png'; // Corrected and simplified
+const schoolName = 'Smartkidz Wakad';
+const logoUrl = '/images/smartkidz_logo.png';
 
 const Header1: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // sm = 600px
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
@@ -56,6 +56,17 @@ const Header1: React.FC = () => {
             >
               <MenuIcon />
             </IconButton>
+            <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              minWidth: 100,
+              backgroundColor: '#ffffff', // White background for the logo
+              borderRadius: 1, // Optional: Add rounded corners
+              padding: 0.5, // Optional: Add some padding around the logo
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Optional: Add a subtle shadow
+            }}
+          >
             <img
               src={logoUrl}
               alt="School Logo"
@@ -63,7 +74,7 @@ const Header1: React.FC = () => {
                 height: isMobile ? 30 : 40,
                 maxWidth: '100%',
               }}
-            />
+            /></Box>
           </Box>
 
           {/* CENTER: School Name */}
@@ -106,7 +117,7 @@ const Header1: React.FC = () => {
           },
         }}
       >
-        <SidebarMenu userRole="admin" />
+        <SidebarMenu onMenuClick={handleDrawerClose} /> {/* Pass the handler */}
       </Drawer>
     </>
   );

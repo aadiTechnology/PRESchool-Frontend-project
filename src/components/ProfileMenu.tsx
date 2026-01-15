@@ -13,10 +13,24 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth'; // Adjust the path if needed
 
 const ProfileMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  // Get user details from localStorage
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userName =
+    user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.name || 'User';
+  const userRole =
+    user.role === 2 ? 'Teacher' : user.role === 3 ? 'Parent' : '';
+  const userClass = user.className || user.class || '';
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -24,9 +38,12 @@ const ProfileMenu: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const userName = 'Ms. Anubha Brajesh';
-  const userRole = 'Teacher';
+  const handleLogout = () => {
+    logout();
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate('/login');
+  };
 
   return (
     <>
@@ -70,17 +87,26 @@ const ProfileMenu: React.FC = () => {
               <Typography variant="subtitle2" fontWeight="bold" color="primary">
                 {userName}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {userRole}
-              </Typography>
+              {/* <Typography variant="caption" color="text.secondary">
+                {userClass}
+              </Typography> */}
+              {(user.role === 2 || user.role === 3) && userClass && (
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  display="block"
+                >
+                  Class: {userClass}
+                </Typography>
+              )}
             </Box>
           </Box>
         </Box>
 
-        <Divider />
+        {/* <Divider /> */}
 
         {/* Menu Options */}
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" />
           </ListItemIcon>
@@ -97,11 +123,11 @@ const ProfileMenu: React.FC = () => {
             <LockIcon fontSize="small" />
           </ListItemIcon>
           Change Password
-        </MenuItem>
+        </MenuItem> */}
 
         <Divider />
 
-        <MenuItem>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>

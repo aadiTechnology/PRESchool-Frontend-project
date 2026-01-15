@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { login as loginService, register } from '../services/authService';
+import { User } from '../types';
 
 
 export interface AuthContextType {
@@ -10,6 +11,7 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (userData: { firstName: string; lastName: string; email: string; phone: string; password: string }) => Promise<any>;
   logout: () => void;
+  role?: string; // Add this line
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -63,5 +65,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       {children}
     </AuthContext.Provider>
   );
+};
+
+const initialData: Partial<User> & { password?: string; confirmPassword?: string } = {};
+
+export const YourComponent = () => {
+  const [form, setForm] = useState<Partial<User> & { password?: string; confirmPassword?: string }>(initialData);
+
+
 };
 

@@ -10,12 +10,11 @@ const NotFound: React.FC = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        backgroundImage: 'url("/images/happy_kids1.png")',
+        // backgroundImage: 'url("/images/happy_kids1.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -38,8 +37,8 @@ const NotFound: React.FC = () => {
         </Button>
       </Box>
 
-      {/* Centered 404 message */}
-      <Box
+  
+      {/* <Box
         sx={{
           flex: 1,
           display: 'flex',
@@ -50,25 +49,8 @@ const NotFound: React.FC = () => {
           textAlign: 'center',
         }}
       >
-        <Typography
-          variant={isMobile ? 'h3' : 'h1'}
-          gutterBottom
-          sx={{ color: '#fff', textShadow: '2px 2px 8px #000' }}
-        >
-          404
-        </Typography>
-        <Typography
-          variant={isMobile ? 'h6' : 'h5'}
-          gutterBottom
-          sx={{ color: '#fff', textShadow: '1px 1px 6px #000' }}
-        >
-          Page Not Found
-        </Typography>
-
-        <Button variant="contained" color="secondary" onClick={() => navigate('/')}>
-          Go to Home
-        </Button>
-      </Box>
+       
+      </Box> */}
     </Box>
   );
 };

@@ -1,15 +1,21 @@
+import { API_URL } from '../constants/config';
 export interface RegisterUserParams {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
-  confirm_password: string;
-  role: string;
+  confirmPassword: string;
+  role: number;
+  preschoolId: number;
+  classId: number;
+  divisionId: number;
+  fatherName: string;
+  childAge: number;
 }
 
 export async function registerUser(params: RegisterUserParams): Promise<void> {
-  const response = await fetch('http://localhost:8000/api/v1/auth/register', {
+  const response = await fetch(`${API_URL}/api/v1/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(params),

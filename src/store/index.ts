@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userSlice from '../features/user/userSlice'; // Assuming you will create a userSlice for user-related state
 
 const store = configureStore({
   reducer: {
-    user: userSlice,
+    // user: userSlice,
     // Add other reducers here as needed
   },
 });

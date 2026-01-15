@@ -1,22 +1,35 @@
 // This file exports global TypeScript types and interfaces.
 
 export interface User {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: string;
-  role: 'student' | 'teacher' | 'admin';
+  phone: string;
+  role: number;
+  preschoolId?: number;
+  qualification?: string;
+  fatherName?: string;
+  childAge?: string;
+  classId?: number;      // <-- Add this
+  divisionId?: number;   // <-- Add this
+  className?: string;
+  divisionName?: string;
 }
 
 export interface RegisterUser {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
-  confirm_password: string;
-  role: string;
+  confirmPassword: string;
+  role: number;
+  preschoolId: number;
+  classId: number;
+  divisionId: number;
+  fatherName: string;
+  childAge: number;
 }
 
 export interface LoginUser {
